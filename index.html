@@ -4311,8 +4311,12 @@
   }
 
   // OAuth redirect 回來後重新取 session
+  // 只在「登入畫面顯示中」時才重載，避免無限重載循環
+  let _authReloaded = false;
   _sb.auth.onAuthStateChange((event, session) => {
-    if(event === 'SIGNED_IN' && session && !_currentUser){
+    const overlayShowing = document.getElementById('loginOverlay')?.style.display === 'flex';
+    if(event === 'SIGNED_IN' && session && !_currentUser && overlayShowing && !_authReloaded){
+      _authReloaded = true;
       window.location.reload();
     }
   });
