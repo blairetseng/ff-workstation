@@ -895,6 +895,30 @@
 
       <section>
         <div class="section-head">
+          <h2>自訂區間查詢</h2>
+          <div class="rule"></div>
+        </div>
+        <p class="chart-conclusion">自選起迄月份＋IP＋類別，查詢區間內業績。流產案自動排除；YT/FB分潤不在本表（屬月結體系）。</p>
+        <div class="filter-row" style="flex-wrap:wrap; gap:10px;">
+          <label>起</label>
+          <select id="rqFrom" style="border:1px solid var(--line); padding:6px 10px;"></select>
+          <label>迄</label>
+          <select id="rqTo" style="border:1px solid var(--line); padding:6px 10px;"></select>
+          <select id="rqIp" style="border:1px solid var(--line); padding:6px 10px;"></select>
+          <select id="rqType" style="border:1px solid var(--line); padding:6px 10px;"></select>
+          <button onclick="renderRangeQuery()" style="border:1px solid var(--ink); background:var(--ink); color:#fff; padding:6px 18px; cursor:pointer;">查詢</button>
+        </div>
+        <div id="rqSummary" style="margin:14px 0;"></div>
+        <div class="table-wrap" id="rqDetailWrap" style="display:none;">
+          <table class="data-table">
+            <thead><tr><th>編號</th><th>IP</th><th>案名</th><th>類別</th><th style="text-align:right;">未稅</th><th>狀態</th></tr></thead>
+            <tbody id="rqDetailBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
           <h2>營收儀表板</h2>
           <div class="rule"></div>
         </div>
@@ -4294,6 +4318,7 @@
     await checkStorageHealth();
     await loadYtData();
     await loadProjectRegistry();
+    initRangeQuery();
     await loadIpData();
     renderFinance();
     renderIpCompare();
@@ -4973,6 +4998,60 @@
   }
 
   let selectedProjectIdx = null;
+
+  // ===== 自訂區間查詢 =====
+  function yymmLabel(yymm){ return '20'+yymm.slice(0,2)+'年'+parseInt(yymm.slice(2),10)+'月'; }
+  function initRangeQuery(){
+    const fromSel = document.getElementById('rqFrom');
+    if(!fromSel || fromSel.dataset.bound) return;
+    const yymms = [...new Set(projectRegistry.map(getProjectYearMonth).filter(v=>/^\d{4}$/.test(v)))].sort();
+    const opts = yymms.map(v=>`<option value="${v}">${yymmLabel(v)}</option>`).join('');
+    fromSel.innerHTML = opts;
+    document.getElementById('rqTo').innerHTML = opts;
+    if(yymms.length){
+      fromSel.value = yymms[Math.max(0, yymms.length-6)];
+      document.getElementById('rqTo').value = yymms[yymms.length-1];
+    }
+    const types = [...new Set(projectRegistry.map(p=>p.type).filter(Boolean))];
+    document.getElementById('rqIp').innerHTML = '<option value="all">全部IP</option>' + ALL_IPS_INCLUDING_ADVISORY.map(ip=>`<option value="${ip}">${ip}</option>`).join('') + '<option value="">（無IP／公司案）</option>';
+    document.getElementById('rqType').innerHTML = '<option value="all">全部類別</option>' + types.map(t=>`<option value="${t}">${t}</option>`).join('');
+    fromSel.dataset.bound = '1';
+  }
+  function renderRangeQuery(){
+    const from = document.getElementById('rqFrom').value;
+    const to = document.getElementById('rqTo').value;
+    const ipSel = document.getElementById('rqIp').value;
+    const typeSel = document.getElementById('rqType').value;
+    if(from > to){
+      document.getElementById('rqSummary').innerHTML = '<span style="color:var(--negative);">起月不可晚於迄月</span>';
+      document.getElementById('rqDetailWrap').style.display = 'none';
+      return;
+    }
+    let aborted = 0;
+    const rows = projectRegistry.filter(p=>{
+      const ym = getProjectYearMonth(p);
+      if(!/^\d{4}$/.test(ym) || ym < from || ym > to) return false;
+      if(ipSel !== 'all' && (p.ip||'') !== ipSel) return false;
+      if(typeSel !== 'all' && p.type !== typeSel) return false;
+      if(p.status === '未執行(流產)'){ aborted++; return false; }
+      return true;
+    });
+    const untaxSum = rows.reduce((s,p)=>s+(p.untaxedAmount||0),0);
+    const byIp = {};
+    rows.forEach(p=>{ const k = p.ip || '（無IP）'; byIp[k] = (byIp[k]||0) + (p.untaxedAmount||0); });
+    const ipCells = Object.entries(byIp).sort((a,b)=>b[1]-a[1])
+      .map(([k,v])=>`<div style="border:1px solid var(--line); background:#fff; padding:10px 16px;"><div style="font-size:12px; color:var(--slate);">${k}</div><div style="font-family:var(--mono); font-size:16px; font-weight:600;">${Math.round(v).toLocaleString()}</div></div>`).join('');
+    document.getElementById('rqSummary').innerHTML =
+      `<div style="display:flex; gap:12px; flex-wrap:wrap; align-items:stretch;">`+
+      `<div style="border:1px solid var(--ink); background:#fff; padding:10px 16px;"><div style="font-size:12px; color:var(--slate);">${yymmLabel(from)} ～ ${yymmLabel(to)}｜未稅合計</div><div style="font-family:var(--mono); font-size:22px; font-weight:700;">${Math.round(untaxSum).toLocaleString()}</div></div>`+
+      `<div style="border:1px solid var(--line); background:#fff; padding:10px 16px;"><div style="font-size:12px; color:var(--slate);">筆數</div><div style="font-family:var(--mono); font-size:22px; font-weight:700;">${rows.length}</div></div>`+
+      ipCells + `</div>`+
+      (aborted ? `<div style="font-size:12px; color:var(--slate); margin-top:6px;">已排除流產案 ${aborted} 筆</div>` : '');
+    const body = document.getElementById('rqDetailBody');
+    body.innerHTML = rows.sort((a,b)=>(a.code||'').localeCompare(b.code||''))
+      .map(p=>`<tr><td style="font-family:var(--mono);">${p.code||''}</td><td>${p.ip||'—'}</td><td>${p.name||''}</td><td>${p.type||''}</td><td style="text-align:right; font-family:var(--mono);">${Math.round(p.untaxedAmount||0).toLocaleString()}</td><td>${p.status||''}</td></tr>`).join('');
+    document.getElementById('rqDetailWrap').style.display = rows.length ? 'block' : 'none';
+  }
 
   function renderProjectRegistry(){
     const body = document.getElementById('projectBody');
