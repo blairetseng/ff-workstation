@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>自由自在｜制式作業台 v65</title>
+<title>自由自在｜制式作業台 v66</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -645,7 +645,7 @@
   <div style="background:#fff; border:1px solid #d8d6d0; padding:48px 56px; text-align:center; max-width:380px; width:90%;">
     <div style="font-family:'Noto Serif TC',serif; font-size:12px; letter-spacing:0.3em; color:#6b6b6b; margin-bottom:8px;">自由自在</div>
     <div style="font-family:'Noto Serif TC',serif; font-size:24px; font-weight:700; margin-bottom:4px;">制式作業台</div>
-    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v65</div>
+    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v66</div>
     <button id="googleSignInBtn" onclick="signInWithGoogle()" style="width:100%; padding:13px; background:#1a1a1a; color:#fff; border:none; cursor:pointer; font-size:14px; font-family:'Noto Sans TC',sans-serif; letter-spacing:0.05em; display:flex; align-items:center; justify-content:center; gap:10px;">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
       以 Google 帳號登入
@@ -674,7 +674,7 @@
     <div class="sidebar-foot">
       表單設計與流程標準化<br>
       委刊單・零用金請款單・財務報表<br>
-      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v65</span>
+      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v66</span>
       <div id="userInfoBar" style="margin-top:10px; padding-top:10px; border-top:1px solid #3a3a3a; display:none;">
         <div id="userEmail" style="font-size:11px; color:#9a9a9a; word-break:break-all; margin-bottom:6px;"></div>
         <button onclick="signOut()" style="background:transparent; border:1px solid #555; color:#c9c9c9; font-size:11px; padding:3px 10px; cursor:pointer; border-radius:2px; width:100%;">登出</button>
@@ -759,17 +759,32 @@
 
       <section>
         <div class="section-head">
-          <h2>公司留存分析（IP相關業務：商案＋YT＋油掰掰銷售）</h2>
+          <h2>IP合作分成總覽（商案＋YT）</h2>
           <div class="rule"></div>
         </div>
         <p class="chart-conclusion" id="retainedConclusion"></p>
         <div style="overflow-x:auto;"><table class="data-table" id="retainedTable">
           <thead><tr>
-            <th class="text-col">IP</th><th>相關營收(未稅)</th><th>應付分潤(淨)</th><th>營運留存</th><th>孵化成本回收</th><th>公司實拿合計</th><th>營運留存率</th>
+            <th class="text-col">IP</th><th>合作收入(未稅)</th><th>IP分成</th><th>公司分成</th><th>孵化收入</th><th>公司合計</th><th>公司分成比</th>
           </tr></thead>
           <tbody id="retainedBody"></tbody>
         </table></div>
         <div class="export-note" id="retainedNote" style="margin-top:8px;"></div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>全公司收入結構（未扣商品成本與營運費用）</h2>
+          <div class="rule"></div>
+        </div>
+        <p class="chart-conclusion" id="bizlineConclusion"></p>
+        <div style="overflow-x:auto;"><table class="data-table" id="bizlineTable">
+          <thead><tr>
+            <th class="text-col">業務線</th><th>收入(未稅)</th><th>支出(分潤/獎金)</th><th>公司淨收入</th><th>淨收入佔比</th>
+          </tr></thead>
+          <tbody id="bizlineBody"></tbody>
+        </table></div>
+        <div class="export-note" id="bizlineNote" style="margin-top:8px;"></div>
       </section>
 
       <section>
@@ -2662,6 +2677,25 @@
     }
     return false;
   }
+  // =====================================================
+  // 分成比例中央設定（v66）——日後調整比例只改這張表，不動計算邏輯
+  // from:'YYMM'（含）起生效；同一鍵可放多條，取「生效月≤案件年月」的最後一條
+  // 調整範例：蕭小M 2026/9起改四六拆 → 在'蕭小M'陣列加 {from:'2609', ipPct:0.4, note:'2026/9起：小M40%'}
+  // =====================================================
+  const DEAL_SHARE_RULES = {
+    '冰蹦拉':            [ {from:'0000', ipPct:0.80, note:'固定80%歸冰蹦拉，20%歸公司'} ],
+    '蕭小M':             [ {from:'0000', ipPct:0.50, note:'商案預設50/50（逐案議定，特例用人工覆蓋）'} ],
+    '蝌蚪老師|置入':      [ {from:'0000', ipPct:0.40, note:'置入/授權/團購類：蝌蚪40%'} ],
+    '蝌蚪老師|活動':      [ {from:'0000', ipPct:0.80, note:'活動/通告類：蝌蚪80%'} ],
+  };
+  function dealShareRule(key, p){
+    const rules = DEAL_SHARE_RULES[key];
+    if(!rules || !rules.length) return null;
+    const ym = getProjectYearMonth(p) || '9999';
+    let hit = rules[0];
+    rules.forEach(r=>{ if(r.from <= ym) hit = r; });
+    return hit;
+  }
   function calcProjRow(ip, p){
     // 手動覆蓋優先：有些案子是議定金額，不是照固定比例算
     const shareOv = getOverride(shareOverrides, p);
@@ -2682,8 +2716,8 @@
       if((p.note||'').includes('全額給蝌蚪')) return {share: amt, note:'全額給蝌蚪（特例）'};
       const isPlacement = (p.coopItem||'').includes('置入') || (p.coopItem||'').includes('團購') || (p.coopItem||'').includes('授權');
       const isEvent = (p.coopItem||'').includes('通告') || (p.coopItem||'').includes('活動');
-      if(isPlacement) return {share: amt*0.4, note:'置入/授權/團購類：蝌蚪40%'};
-      if(isEvent) return {share: amt*0.8, note:'活動/通告類：蝌蚪80%'};
+      if(isPlacement){ const r=dealShareRule('蝌蚪老師|置入', p); return {share: amt*r.ipPct, note:r.note, ipPct:r.ipPct}; }
+      if(isEvent){ const r=dealShareRule('蝌蚪老師|活動', p); return {share: amt*r.ipPct, note:r.note, ipPct:r.ipPct}; }
       return {share: null, note:'合作項目未分類，無法自動判斷比例'};
     }
     if(ip==='蕭小M'){
@@ -2691,11 +2725,12 @@
         // 頻道收益一律100%歸公司（小M未支付影音製作孵化成本，以此補償；2026-07經Excel對帳確認全期適用）
         return {share: 0, note:'頻道收益100%歸公司（小M未支付孵化成本）'};
       }
-      // 商案預設50/50；實務上逐案議定，特殊比例請用「人工議定」欄覆蓋
-      return {share: amt*0.5, note:'商案預設50/50（逐案議定，特例用人工覆蓋）'};
+      const r = dealShareRule('蕭小M', p);
+      return {share: amt*r.ipPct, note:r.note, ipPct:r.ipPct};
     }
     if(ip==='冰蹦拉'){
-      return {share: amt*0.8, note:'固定80%歸冰蹦拉，20%歸公司'};
+      const r = dealShareRule('冰蹦拉', p);
+      return {share: amt*r.ipPct, note:r.note, ipPct:r.ipPct};
     }
     return {share:null, note:''};
   }
@@ -2998,9 +3033,7 @@
   function dealRatioLabel(ip, r, calc){
     if(r.code==='AD-003') return '歸公司';  // 頻道收益一律100%歸公司（2026-07定案；已付之7,144/6,814既往不咎）
     if(calc && calc.isOverride) return '議定';
-    if(ip==='蝌蚪老師') return (r.coopItem==='通告'||r.coopItem==='活動') ? '80%' : '40%';
-    if(ip==='冰蹦拉') return '80%';
-    if(ip==='蕭小M') return '50%';
+    if(calc && calc.ipPct!=null) return Math.round(calc.ipPct*100)+'%';  // v66：讀中央設定，比例調整自動跟上
     return '';
   }
   function exportOfficialReport(ip, month){
@@ -6006,15 +6039,8 @@
       const bolaBonusYear = yearMonths.reduce((s,m)=>s+bolaBonusFor(m).reduce((a,b)=>a+b.amt,0),0);
       const bolaRow = retainedAgg.find(r=>r.ip==='冰蹦拉');
       if(bolaRow && bolaBonusYear>0){ bolaRow.payable -= bolaBonusYear; bolaRow.retained += bolaBonusYear; bolaRow.operating = bolaRow.retained - bolaRow.costRecov; bolaRow.rate = bolaRow.revenue>0 ? bolaRow.retained/bolaRow.revenue*100 : null; }
-      const soSalesYear = projectRegistry.filter(p=>(p.code||'').startsWith('SO-') && p.status!=='未執行(流產)' && getProjectYear(p)===selYear)
-        .reduce((s,p)=>s+((p.untaxedAmount!=null&&p.untaxedAmount!=='')?p.untaxedAmount:(p.amount1||0)),0);
-      const soRow = (soSalesYear!==0 || bolaBonusYear>0) ? {
-        ip:'油掰掰銷售＋開團獎金', revenue:soSalesYear, payable:bolaBonusYear, cost:0,
-        retained:soSalesYear-bolaBonusYear, costRecov:0, operating:soSalesYear-bolaBonusYear,
-        rate: soSalesYear>0 ? (soSalesYear-bolaBonusYear)/soSalesYear*100 : null,
-        checkErr:0, isSo:true
-      } : null;
-      const tableRows = soRow ? [...retainedAgg, soRow] : retainedAgg.slice();
+      // v66：油掰掰屬品牌商品業務、非IP，不列入本表（獎金仍自冰蹦拉列剝離，計入品牌商品損益另議）
+      const tableRows = retainedAgg.slice();
       const aggSum = tableRows.reduce((a,r)=>({revenue:a.revenue+r.revenue, payable:a.payable+r.payable, cost:a.cost+r.cost, retained:a.retained+r.retained, costRecov:a.costRecov+r.costRecov, operating:a.operating+r.operating, checkErr:a.checkErr+r.checkErr}), {revenue:0,payable:0,cost:0,retained:0,costRecov:0,operating:0,checkErr:0});
 
       document.getElementById('overviewDataFreshness').innerHTML =
@@ -6025,7 +6051,7 @@
         <div class="stat-card"><div class="stat-label">較${selYear-1}年同期</div><div class="stat-value">${growth===null?'－':(growth>=0?'▲':'▼')+fmt(Math.abs(growth),1)+'%'}</div><div class="stat-sub">${growth===null?'無去年資料':'成長/下滑幅度'}</div></div>
         <div class="stat-card"><div class="stat-label">應收帳款總額</div><div class="stat-value">${fmt(totalUnpaidAll,0)}</div><div class="stat-sub">TWD，全部年度未收款項</div></div>
         <div class="stat-card"><div class="stat-label">已逾期未收</div><div class="stat-value">${fmt(overdueAll,0)}</div><div class="stat-sub">TWD，需優先處理</div></div>
-        <div class="stat-card"><div class="stat-label">${selYear}年公司留存（IP業務）</div><div class="stat-value">${fmt(aggSum.retained,0)}</div><div class="stat-sub">留存率 ${aggSum.revenue>0?(aggSum.retained/aggSum.revenue*100).toFixed(1)+'%':'－'}（含成本回收；商案＋YT＋油掰掰）</div></div>
+        <div class="stat-card"><div class="stat-label">${selYear}年公司合計（IP業務）</div><div class="stat-value">${fmt(aggSum.retained,0)}</div><div class="stat-sub">公司分成 ${fmt(aggSum.operating,0)}＋孵化收入 ${fmt(aggSum.costRecov,0)}</div></div>
       `;
 
       const ALL_CATEGORIES = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅','YT收入','FB收入'];
@@ -6049,8 +6075,8 @@
       if(rBody){
         const sorted = retainedAgg.slice().sort((a,b)=>b.operating-a.operating);
         const opRate = (r)=> r.revenue>0 ? (r.operating/r.revenue*100) : null;
-        const renderRow = (r)=>`<tr${r.isSo?' style="background:#F4F2EE;"':''}>
-          <td class="text-col">${r.ip}${r.isSo?'<br><small style="color:var(--ash);">獎金＝開團批次銷售額30%</small>':''}</td>
+        const renderRow = (r)=>`<tr>
+          <td class="text-col">${r.ip}</td>
           <td class="readonly">${fmt(r.revenue,0)}</td>
           <td class="readonly">${fmt(r.payable,0)}</td>
           <td class="readonly" style="font-weight:600; color:${r.operating>=0?'inherit':'#9C4A3C'};">${fmt(r.operating,0)}</td>
@@ -6058,7 +6084,7 @@
           <td class="readonly" style="font-weight:600;">${fmt(r.retained,0)}</td>
           <td class="readonly">${opRate(r)===null?'－':fmt(opRate(r),1)+'%'}</td>
         </tr>`;
-        rBody.innerHTML = sorted.map(renderRow).join('') + (soRow?renderRow(soRow):'') + `<tr style="border-top:2px solid var(--ink);">
+        rBody.innerHTML = sorted.map(renderRow).join('') + `<tr style="border-top:2px solid var(--ink);">
           <td class="text-col" style="font-weight:700;">合計</td>
           <td class="readonly" style="font-weight:700;">${fmt(aggSum.revenue,0)}</td>
           <td class="readonly" style="font-weight:700;">${fmt(aggSum.payable,0)}</td>
@@ -6070,13 +6096,50 @@
         const topOp = sorted[0];
         const revSorted = retainedAgg.slice().sort((a,b)=>b.revenue-a.revenue);
         const rankNote = (topOp && revSorted[0] && topOp.ip!==revSorted[0].ip)
-          ? `；營收最高為「${revSorted[0].ip}」，但依經常性營運留存排序第一是「${topOp.ip}」`
+          ? `；合作收入最高為「${revSorted[0].ip}」，但公司分成第一是「${topOp.ip}」`
           : '';
         document.getElementById('retainedConclusion').textContent = topOp && aggSum.revenue>0
-          ? `結論：${selYear}年營運留存（經常性毛利）最高的IP是「${topOp.ip}」（${fmt(topOp.operating,0)}，營運留存率 ${opRate(topOp)===null?'－':opRate(topOp).toFixed(1)+'%'}）；另有孵化成本回收 ${fmt(aggSum.costRecov,0)}（合約性收入，隨合約結束歸零）${rankNote}`
+          ? `結論：${selYear}年公司分成最高的IP是「${topOp.ip}」（${fmt(topOp.operating,0)}，公司分成比 ${opRate(topOp)===null?'－':opRate(topOp).toFixed(1)+'%'}）；另有孵化收入 ${fmt(aggSum.costRecov,0)}（合約性，到期歸零）${rankNote}`
           : '尚無資料';
         document.getElementById('retainedNote').innerHTML =
-          `口徑：商案＝未稅金額、YT＝後台分配額（與IP撥款彙總表一致）。營運留存＝經常性分潤利差（真毛利）；孵化成本回收＝合約性收入（簡少年：9,000USD/月基準內之YT收入；蝌蚪：運營費60,000/月×2024/8–2026/4，月報以抵扣處理，此表列為應付減項），合約結束即歸零，不可視為經常性獲利。公司實拿合計＝兩者相加，均未扣公司其他營運費用。油掰掰列：銷售為全年電商總額（未扣商品成本）；獎金為實際提列入帳數（開團銷售額未登錄系統，不回推30%）；冰蹦拉列已剝離獎金，回歸商案純80/20。恆等式驗算（營收−成本−應付＝留存）誤差：${aggSum.checkErr<1?'0（通過）':'⚠ '+fmt(aggSum.checkErr,2)+'，請通報'}`;
+          `口徑：商案＝未稅金額、YT＝後台分配額（與IP撥款彙總表一致）。公司分成＝分潤規則下公司分到的（經常性）；孵化收入＝IP另付公司的合約性費用（簡少年：9,000USD/月基準內之YT收入；蝌蚪：運營費60,000/月×2024/8–2026/4，月報以抵扣處理，此表列為IP分成減項），合約到期即歸零。公司合計＝公司分成＋孵化收入，未扣公司營運費用。油掰掰屬品牌商品（非IP）不列入本表；開團獎金已自冰蹦拉列剝離，冰蹦拉為商案純80/20，獎金列於「全公司收入結構」品牌商品線之支出。恆等式驗算（營收−成本−應付＝留存）誤差：${aggSum.checkErr<1?'0（通過）':'⚠ '+fmt(aggSum.checkErr,2)+'，請通報'}`;
+      }
+
+      // ---- 全公司收入結構（v66）：五條業務線的 收入→支出→公司淨收入；無成本資料，標題明示未扣 ----
+      const bizBody = document.getElementById('bizlineBody');
+      if(bizBody){
+        const untaxOf = (p)=> (p.untaxedAmount!=null&&p.untaxedAmount!=='') ? p.untaxedAmount : (p.amount1||0)/1.05;
+        const sumType = (types)=> projectRegistry.filter(p=>types.includes(p.type) && p.status!=='未執行(流產)' && getProjectYear(p)===selYear)
+          .reduce((s,p)=>s+untaxOf(p),0);
+        const brandRev = sumType(['品牌商品']);
+        const lines = [
+          {name:'IP業務（商案＋YT）', rev:aggSum.revenue, out:aggSum.payable, net:aggSum.retained, note:'支出=IP分成（淨額，孵化收入已抵）'},
+          {name:'品牌商品（油掰掰/福祿葫蘆）', rev:brandRev, out:bolaBonusYear, net:brandRev-bolaBonusYear, note:'支出=開團獎金；未扣商品成本'},
+          {name:'製作服務', rev:sumType(['製作服務']), out:0, net:sumType(['製作服務'])},
+          {name:'空間租賃＋授權版稅', rev:sumType(['空間租賃','授權版稅']), out:0, net:sumType(['空間租賃','授權版稅'])},
+        ];
+        const fbY = YT_FB_HISTORY.filter(r=>parseMonthStr(r.month).year===selYear).reduce((s,r)=>s+r.fb,0);
+        if(fbY>0) lines.push({name:'FB收入', rev:fbY, out:0, net:fbY});
+        const bizSum = lines.reduce((a,l)=>({rev:a.rev+l.rev, out:a.out+l.out, net:a.net+l.net}), {rev:0,out:0,net:0});
+        bizBody.innerHTML = lines.map(l=>`<tr>
+          <td class="text-col">${l.name}${l.note?'<br><small style="color:var(--ash);">'+l.note+'</small>':''}</td>
+          <td class="readonly">${fmt(l.rev,0)}</td>
+          <td class="readonly">${l.out>0?fmt(l.out,0):'－'}</td>
+          <td class="readonly" style="font-weight:600;">${fmt(l.net,0)}</td>
+          <td class="readonly">${bizSum.net>0?fmt(l.net/bizSum.net*100,1)+'%':'－'}</td>
+        </tr>`).join('') + `<tr style="border-top:2px solid var(--ink);">
+          <td class="text-col" style="font-weight:700;">合計</td>
+          <td class="readonly" style="font-weight:700;">${fmt(bizSum.rev,0)}</td>
+          <td class="readonly" style="font-weight:700;">${fmt(bizSum.out,0)}</td>
+          <td class="readonly" style="font-weight:700;">${fmt(bizSum.net,0)}</td>
+          <td class="readonly" style="font-weight:700;">100%</td>
+        </tr>`;
+        const topLine = lines.slice().sort((a,b)=>b.net-a.net)[0];
+        document.getElementById('bizlineConclusion').textContent = bizSum.net>0
+          ? `結論：${selYear}年公司淨收入 ${fmt(bizSum.net,0)}（未扣商品成本與營運費用），最大來源為「${topLine.name}」佔 ${fmt(topLine.net/bizSum.net*100,1)}%`
+          : '尚無資料';
+        document.getElementById('bizlineNote').innerHTML =
+          '口徑：全表未稅（原始僅含稅者以÷1.05估算）；YT為後台分配額。公司淨收入＝收入－分潤/獎金支出，未扣商品成本、製作外包以外之人事與營運費用——此表回答「錢從哪來、流到哪去、留下多少」，非最終淨利。';
       }
 
       const trendYears = allYears.slice().reverse();
