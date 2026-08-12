@@ -6061,7 +6061,7 @@
           ? `結論：${selYear}年公司實拿最多的IP是「${topRet.ip}」（留存 ${fmt(topRet.retained,0)}，留存率 ${topRet.rate===null?'－':topRet.rate.toFixed(1)+'%'}）${rankNote}`
           : '尚無資料';
         document.getElementById('retainedNote').innerHTML =
-          `口徑：商案＝未稅金額、YT＝後台分配額（與IP撥款彙總表一致）；留存＝營收－製作成本－應付分潤，未扣公司其他營運費用。油掰掰列：銷售為全年電商總額（未扣商品成本），獎金僅對「開團批次」按銷售額30%計提，故全年留存率高於70%；冰蹦拉列已剝離此獎金，回歸商案純80/20。恆等式驗算（營收−成本−應付＝留存）誤差：${aggSum.checkErr<1?'0（通過）':'⚠ '+fmt(aggSum.checkErr,2)+'，請通報'}`;
+          `口徑：商案＝未稅金額、YT＝後台分配額（與IP撥款彙總表一致）；留存＝營收－製作成本－應付分潤，未扣公司其他營運費用。油掰掰列：銷售為全年電商總額（未扣商品成本）；獎金為實際提列入帳數（規則：開團批次銷售額30%，惟開團銷售額未登錄系統，本表不回推、不驗算30%）；冰蹦拉列已剝離此獎金，回歸商案純80/20。恆等式驗算（營收−成本−應付＝留存）誤差：${aggSum.checkErr<1?'0（通過）':'⚠ '+fmt(aggSum.checkErr,2)+'，請通報'}`;
       }
 
       const trendYears = allYears.slice().reverse();
