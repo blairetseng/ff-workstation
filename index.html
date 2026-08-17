@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>自由自在｜制式作業台 v66</title>
+<title>自由自在｜制式作業台 v67</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -30,9 +30,10 @@
     --negative:#9c4a3c;
     --serif:'Noto Serif TC', serif;
     --sans:'Noto Sans TC', sans-serif;
-    --mono:'JetBrains Mono', monospace;
+    --mono:'Noto Sans TC', sans-serif;  /* v67：全站中英數統一字體，表格數字以 tabular-nums 對齊 */
   }
   *{box-sizing:border-box;}
+  td, th, .stat-value, .bar-value, .kv-row .v, input[type=number]{font-variant-numeric:tabular-nums;}
   body{
     margin:0;
     font-family:var(--sans);
@@ -645,7 +646,7 @@
   <div style="background:#fff; border:1px solid #d8d6d0; padding:48px 56px; text-align:center; max-width:380px; width:90%;">
     <div style="font-family:'Noto Serif TC',serif; font-size:12px; letter-spacing:0.3em; color:#6b6b6b; margin-bottom:8px;">自由自在</div>
     <div style="font-family:'Noto Serif TC',serif; font-size:24px; font-weight:700; margin-bottom:4px;">制式作業台</div>
-    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v66</div>
+    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v67</div>
     <button id="googleSignInBtn" onclick="signInWithGoogle()" style="width:100%; padding:13px; background:#1a1a1a; color:#fff; border:none; cursor:pointer; font-size:14px; font-family:'Noto Sans TC',sans-serif; letter-spacing:0.05em; display:flex; align-items:center; justify-content:center; gap:10px;">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
       以 Google 帳號登入
@@ -674,7 +675,7 @@
     <div class="sidebar-foot">
       表單設計與流程標準化<br>
       委刊單・零用金請款單・財務報表<br>
-      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v66</span>
+      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v67</span>
       <div id="userInfoBar" style="margin-top:10px; padding-top:10px; border-top:1px solid #3a3a3a; display:none;">
         <div id="userEmail" style="font-size:11px; color:#9a9a9a; word-break:break-all; margin-bottom:6px;"></div>
         <button onclick="signOut()" style="background:transparent; border:1px solid #555; color:#c9c9c9; font-size:11px; padding:3px 10px; cursor:pointer; border-radius:2px; width:100%;">登出</button>
@@ -702,7 +703,7 @@
           <div class="rule"></div>
           <select id="wizMonth" class="month-inline"></select>
         </div>
-        <p class="chart-conclusion">每月只需要你的三組數字，其餘（分潤、報表、分析）全部自動。任何一區資料還沒到就先跳過，隨時回來補。</p>
+        <p class="chart-conclusion"><span id="wizProgress" style="color:var(--positive,#2E4A33); font-weight:600;"></span>　每月只需要你的三組數字，其餘（分潤、報表、分析）全部自動。任何一區資料還沒到就先跳過，隨時回來補。</p>
 
         <div style="display:grid; gap:14px; grid-template-columns:1fr;">
           <div style="border:1px solid var(--line); padding:10px 12px;">
@@ -981,24 +982,6 @@
 
       <section>
         <div class="section-head">
-          <h2>品牌友好度分析</h2>
-          <div class="rule"></div>
-        </div>
-        <p class="chart-conclusion" id="projectAnalysisConclusion"></p>
-        <div class="chart-grid-2">
-          <div class="chart-block">
-            <h3 class="chart-title">品牌友好度（前5名，IP商務＋製作服務，2023-2026累計）</h3>
-            <div class="summary-panel" id="brandRepeatSummary"></div>
-          </div>
-          <div class="chart-block">
-            <h3 class="chart-title">代理商友好度（前5名，IP商務＋製作服務，2023-2026累計）</h3>
-            <div class="summary-panel" id="agencyRepeatSummary"></div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div class="section-head">
           <h2>專案清單</h2>
           <div class="rule"></div>
           <div class="count" id="projectCount">0 筆</div>
@@ -1044,6 +1027,24 @@
             <div class="rule"></div>
           </div>
           <div id="projectDetailForm"></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>品牌友好度分析</h2>
+          <div class="rule"></div>
+        </div>
+        <p class="chart-conclusion" id="projectAnalysisConclusion"></p>
+        <div class="chart-grid-2">
+          <div class="chart-block">
+            <h3 class="chart-title">品牌友好度（前5名，IP商務＋製作服務，2023-2026累計）</h3>
+            <div class="summary-panel" id="brandRepeatSummary"></div>
+          </div>
+          <div class="chart-block">
+            <h3 class="chart-title">代理商友好度（前5名，IP商務＋製作服務，2023-2026累計）</h3>
+            <div class="summary-panel" id="agencyRepeatSummary"></div>
+          </div>
         </div>
       </section>
 
@@ -1149,7 +1150,7 @@
       </div>
 
       <div class="demo-banner">
-        ✓ 此模組已改用真實歷史數據（2024年12月起，最新已更新至2026年5月）。匯出邏輯已驗證（單一IP版／內部完整版皆測試通過）。
+        ✓ 此模組使用真實歷史數據（2024年12月起）；最新入帳進度以下方「公司月度總帳」為準。匯出邏輯已驗證（單一IP版／內部完整版皆測試通過）。
       </div>
 
       <section>
@@ -1158,35 +1159,38 @@
           <div class="rule"></div>
         </div>
 
-        <div class="chart-grid-2">
-          <div class="chart-block">
-            <h3 class="chart-title">年度未稅實收比較（USD）</h3>
-            <p class="chart-conclusion" id="yearlyConclusion"></p>
-            <canvas id="chartYearly" height="200"></canvas>
-            <p class="chart-note" id="yearlyNote"></p>
-          </div>
-
-          <div class="chart-block">
-            <div class="chart-head-row">
-              <h3 class="chart-title">同月不同年度比較</h3>
-              <select id="monthPickerCompare" class="month-inline"></select>
-            </div>
-            <p class="chart-conclusion" id="monthCompareConclusion"></p>
-            <canvas id="chartMonthCompare" height="200"></canvas>
-          </div>
+        <div class="chart-block">
+          <h3 class="chart-title">年度未稅實收比較（USD）</h3>
+          <p class="chart-conclusion" id="yearlyConclusion"></p>
+          <p class="chart-note" id="yearlyNote"></p>
         </div>
-
 
         <div class="chart-block">
           <div class="chart-head-row">
-            <h3 class="chart-title">各IP月度分拆金額趨勢（TWD）</h3>
+            <h3 class="chart-title">同月不同年度比較</h3>
+            <select id="monthPickerCompare" class="month-inline"></select>
+          </div>
+          <p class="chart-conclusion" id="monthCompareConclusion"></p>
+        </div>
+
+        <div class="chart-block">
+          <div class="chart-head-row">
+            <h3 class="chart-title">各IP月度摘要</h3>
             <select id="trendYearFilter" class="month-inline"></select>
           </div>
           <div class="summary-panel" id="trendYearSummary"></div>
-          <canvas id="chartIpTrend" height="220" style="margin-top:16px;"></canvas>
-          <p class="chart-note">用來觀察加入新IP或個別IP成長狀況。目前資料範圍內三位IP從一開始就都存在，還看不出「新增IP」的變化點；未來簽新IP、資料累積之後，這張圖會自動反映出新IP加入前後的變化。</p>
         </div>
       </section>
+      <section>
+        <div class="section-head">
+          <h2>YT數字分析</h2>
+          <div class="rule"></div>
+          <span class="filter-hint" id="concentrationMonthLabel"></span>
+        </div>
+        <p class="chart-conclusion">後台收益集中度（跨IP）。來源結構比較與各IP自身成長已移至「IP營收分析」。</p>
+        <div class="stat-row" id="concentrationStat"></div>
+      </section>
+
 
       <section>
         <div class="section-head">
@@ -1325,43 +1329,6 @@
         </div>
       </section>
     
-      <section>
-        <div class="section-head">
-          <h2>YT數字分析</h2>
-          <div class="rule"></div>
-        </div>
-        <p class="chart-conclusion">以下為YT資料域的跨IP分析（後台收益集中度、來源結構、頻道自身成長），自「IP營收分析」模組移入本模組集中呈現。</p>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <h2>營收集中度</h2>
-          <div class="rule"></div>
-          <span class="filter-hint" id="concentrationMonthLabel"></span>
-        </div>
-        <div class="stat-row" id="concentrationStat"></div>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <h2>各IP收入來源結構比較</h2>
-          <div class="rule"></div>
-          <select id="compareMonthFilter" class="month-inline"></select>
-        </div>
-        <p class="chart-conclusion" id="compareConclusion"></p>
-        <div class="chart-block">
-          <canvas id="chartIpCompare" height="220"></canvas>
-        </div>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <h2>各IP自身成長（跟自己去年同期比，不是互相比較）</h2>
-          <div class="rule"></div>
-        </div>
-        <div class="summary-panel" id="ipGrowthSummary"></div>
-      </section>
-
     </div>
 
     <div class="view" id="view-ipreport">
@@ -1543,6 +1510,26 @@
           <div class="rule"></div>
         </div>
         <div class="summary-panel" id="ipPerformanceSummary"></div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>YT收入來源結構比較（各IP）</h2>
+          <div class="rule"></div>
+          <select id="compareMonthFilter" class="month-inline"></select>
+        </div>
+        <p class="chart-conclusion" id="compareConclusion"></p>
+        <div class="chart-block">
+          <canvas id="chartIpCompare" height="220"></canvas>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>各IP YT自身成長（跟自己去年同期比，不是互相比較）</h2>
+          <div class="rule"></div>
+        </div>
+        <div class="summary-panel" id="ipGrowthSummary"></div>
       </section>
 
       <section>
@@ -1983,12 +1970,13 @@
         conclusionEl.textContent = '尚無資料';
       }
 
-      if(chartYearly) chartYearly.destroy();
-      chartYearly = new Chart(document.getElementById('chartYearly'), {
+      const cvYearly = document.getElementById('chartYearly');
+      if(cvYearly){ if(chartYearly) chartYearly.destroy();
+      chartYearly = new Chart(cvYearly, {
         type:'bar',
         data:{ labels: years.map(y=>y+'年'), datasets:[{ data: yearlyVals, backgroundColor: getComputedColor('--accent'), borderRadius:2 }] },
         options: chartOptsBase('USD')
-      });
+      }); }
 
       // --- Chart 2：同月不同年度比較 ---
       const monthSel = document.getElementById('monthPickerCompare');
@@ -2045,12 +2033,13 @@
         tension:0.25,
         fill:false,
       }));
-      if(chartIpTrend) chartIpTrend.destroy();
-      chartIpTrend = new Chart(document.getElementById('chartIpTrend'), {
+      const cvTrend = document.getElementById('chartIpTrend');
+      if(cvTrend){ if(chartIpTrend) chartIpTrend.destroy();
+      chartIpTrend = new Chart(cvTrend, {
         type:'line',
         data:{ labels: months, datasets },
         options: chartOptsBase('TWD', true)
-      });
+      }); }
 
       // 每月摘要分析
       const summaryEl = document.getElementById('trendYearSummary');
@@ -2090,12 +2079,13 @@
       matched.sort((a,b)=>parseMonthStr(a).year - parseMonthStr(b).year);
       const labels = matched.map(m=>parseMonthStr(m).year+'年');
       const vals = matched.map(m=>calcMonth(m).netnotax);
-      if(chartMonthCompare) chartMonthCompare.destroy();
-      chartMonthCompare = new Chart(document.getElementById('chartMonthCompare'), {
+      const cvMC = document.getElementById('chartMonthCompare');
+      if(cvMC){ if(chartMonthCompare) chartMonthCompare.destroy();
+      chartMonthCompare = new Chart(cvMC, {
         type:'bar',
         data:{ labels, datasets:[{ data: vals, backgroundColor: getComputedColor('--accent'), borderRadius:2 }] },
         options: chartOptsBase('USD')
-      });
+      }); }
 
       // 結論：這個月 vs 去年同月，主要變化來自哪個IP、哪個收益項目
       const conclusionEl = document.getElementById('monthCompareConclusion');
@@ -3802,18 +3792,22 @@
   function renderWizard(){
     const sel = document.getElementById('wizMonth');
     if(!sel) return;
-    if(!sel.dataset.bound){
-      // 月份清單：ytCompany 全部月份 + 下一個月，倒序
-      const list = ytCompany.map(c=>c.month);
-      const last = list[list.length-1];
-      if(last){
-        const {year, month} = parseMonthStr(last);
-        list.push(`${month===12?year+1:year}年${month===12?1:month+1}月`);
-      }
-      sel.innerHTML = list.slice().reverse().map(m=>`<option value="${m}">${m}</option>`).join('');
-      sel.value = wizardMonthLabel();
-      sel.addEventListener('change', renderWizard);
-      sel.dataset.bound = '1';
+    // v67：每次渲染都重建月份清單（存檔後新月份即時出現），並保留使用者目前選擇
+    const prevVal = sel.dataset.bound ? sel.value : null;
+    const list = ytCompany.map(c=>c.month);
+    const last = list[list.length-1];
+    if(last){
+      const {year, month} = parseMonthStr(last);
+      list.push(`${month===12?year+1:year}年${month===12?1:month+1}月`);
+    }
+    sel.innerHTML = list.slice().reverse().map(m=>`<option value="${m}">${m}</option>`).join('');
+    if(!sel.dataset.bound){ sel.addEventListener('change', renderWizard); sel.dataset.bound='1'; }
+    sel.value = (prevVal && list.includes(prevVal)) ? prevVal : wizardMonthLabel();
+    // 進度字：一眼明辨填到何時
+    const prog = document.getElementById('wizProgress');
+    if(prog){
+      const done = ytCompany.filter(c=>c.actual && c.rate);
+      prog.textContent = done.length ? `✓ YT已填至 ${done[done.length-1].month}` : '';
     }
     const mo = sel.value;
     const {year, month} = parseMonthStr(mo);
@@ -3880,7 +3874,13 @@
       }
     });
     await saveYtData();
-    renderYt(); renderYtFbHistory(); renderCompanyOverview(); renderIpAnalysis(); renderWizard();
+    renderYt(); renderYtFbHistory(); renderCompanyOverview(); renderIpAnalysis();
+    // v67：存檔後游標自動前進到下一個未完成月份
+    const selM = document.getElementById('wizMonth');
+    if(selM){ selM.value = ''; }
+    renderWizard();
+    const selM2 = document.getElementById('wizMonth');
+    if(selM2){ selM2.value = wizardMonthLabel(); renderWizard(); }
     alert(`${mo} YT月結已存 ✓（後台各IP明細可之後在YT營收總覽補細項）`);
   }
   async function wizardSaveBrand(){
@@ -4121,14 +4121,12 @@
       pass('流產案狀態機制存在（'+projectRegistry.filter(p=>p.status==='未執行(流產)').length+'筆已標記，排除於營收與應收之外）');
     }catch(e){ fail('流產案檢查', e.message); }
 
-    // 測試6：品牌友好度排除規則——檢查排除清單的品牌未出現在「榜單品牌名」中（不掃說明文字）
+    // 測試6：品牌友好度榜單正常渲染（2026-08-12起大小點客戶品牌「列入」統計；仍排除桃桃喜/善苗洞與傑瑞叔叔）
     try{
       const el = document.getElementById('brandRepeatSummary');
-      // 只取每個榜單項的品牌名（「貢獻營收」前的字），避開頁尾說明文字
-      const names = el ? [...el.querySelectorAll('[data-brand-name], .rank-name, b, strong')].map(n=>n.textContent) : [];
-      const scope = names.length ? names.join(' ') : ((el?el.textContent:'').split('依貢獻營收排序')[0]); // 退回：只取排序說明之前的榜單段
-      if(!/妮維雅|修麗可|Ariel/.test(scope)) pass('品牌友好度排除規則生效（大小點客戶品牌未上榜）');
-      else fail('品牌友好度排除', '榜單出現應排除的大小點客戶品牌');
+      const rows = el ? el.querySelectorAll('tbody tr').length : 0;
+      if(rows>0) pass('品牌友好度榜單正常渲染（'+rows+'列，含大小點客戶品牌）');
+      else fail('品牌友好度榜單', '無資料列，請檢查渲染');
     }catch(e){ fail('品牌友好度檢查', e.message); }
 
     renderTestResults(results);
@@ -5284,33 +5282,43 @@
 
       // IP表現摘要：整合年增率、平均案件金額，給出結論式判讀（不比較業務組成，因為製作費僅簡少年適用，並非風險訊號）
       const SAMPLE_MIN = 5; // 案件數低於這個門檻，成長率視為樣本太小、僅供參考，不當作警示訊號
-      const summaryHtml = ipBars.map(b=>{
+      // v67：改統一表格呈現（原混排文字閱讀性低）
+      const pct1 = (v)=> v===null ? '－' : `<span class="${v>=0?'delta-positive':'delta-negative'}">${v>=0?'▲':'▼'} ${Math.abs(v).toFixed(1)}%</span>`;
+      const perfRows = ipBars.map(b=>{
         const curDeal = (ipDealCount[b.ip]||{})[latestY] || {count:0,total:0};
         const prevDeal = prevY ? ((ipDealCount[b.ip]||{})[prevY] || {count:0,total:0}) : {count:0,total:0};
         const curAvg = curDeal.count ? curDeal.total/curDeal.count : 0;
         const prevAvg = prevDeal.count ? prevDeal.total/prevDeal.count : 0;
         const avgTrend = prevAvg>0 ? (curAvg-prevAvg)/prevAvg*100 : null;
         const lowSample = curDeal.count < SAMPLE_MIN || prevDeal.count < SAMPLE_MIN;
-
-        let tags = [];
+        let verdict;
         if(lowSample){
-          tags.push(`<span style="color:var(--ash);">樣本數過小（今年${curDeal.count}筆／去年${prevDeal.count}筆），成長率僅供參考，不列入警示</span>`);
+          verdict = `<span style="color:var(--ash);">樣本小（今年${curDeal.count}／去年${prevDeal.count}筆），不列警示</span>`;
         }else{
-          if(b.growth!==null && b.growth >= 20) tags.push('<span class="delta-positive">🔥 成長突出</span>');
-          if(b.growth!==null && b.growth <= -20) tags.push('<span class="delta-negative">⚠ 明顯下滑，需關注</span>');
-          if(avgTrend!==null && avgTrend >= 20) tags.push('<span class="delta-positive">案件單價成長中</span>');
-          if(avgTrend!==null && avgTrend <= -20) tags.push('<span class="delta-negative">案件單價下滑，靠量撐業績</span>');
+          const t=[];
+          if(b.growth!==null && b.growth >= 20) t.push('<span class="delta-positive">🔥 成長突出</span>');
+          if(b.growth!==null && b.growth <= -20) t.push('<span class="delta-negative">⚠ 明顯下滑，需關注</span>');
+          if(avgTrend!==null && avgTrend >= 20) t.push('<span class="delta-positive">單價成長中</span>');
+          if(avgTrend!==null && avgTrend <= -20) t.push('<span class="delta-negative">單價下滑，靠量撐業績</span>');
+          verdict = t.length ? t.join('・') : '<span style="color:var(--ash);">平穩，無特別訊號</span>';
         }
-        if(!tags.length) tags.push('<span style="color:var(--ash);">表現平穩，無特別訊號</span>');
-
-        const placementNote = placementRevenue[b.ip] ? `　｜　另有製作費收入（頻道置入類）${fmt(placementRevenue[b.ip],0)}（2023-2026全部歷史累計，不列入本比較）` : '';
-
-        return `<div class="kv-row">
-          <div class="k" style="color:${IP_COLOR[b.ip]||'#333'}; font-weight:600;">${b.ip}</div>
-          <div class="v">${latestY}年案件數 ${curDeal.count} 筆・平均單價 ${fmt(curAvg,0)}　｜　${tags.join('　')}${placementNote}</div>
-        </div>`;
+        return `<tr>
+          <td class="text-col" style="color:${IP_COLOR[b.ip]||'#333'}; font-weight:600;">${b.ip}</td>
+          <td class="readonly">${curDeal.count}</td>
+          <td class="readonly">${fmt(curAvg,0)}</td>
+          <td class="readonly">${lowSample ? '<span style="color:var(--ash);">'+(b.growth===null?'－':(b.growth>=0?'▲':'▼')+' '+Math.abs(b.growth).toFixed(1)+'%')+'</span>' : pct1(b.growth)}</td>
+          <td class="readonly">${lowSample ? '<span style="color:var(--ash);">'+(avgTrend===null?'－':(avgTrend>=0?'▲':'▼')+' '+Math.abs(avgTrend).toFixed(1)+'%')+'</span>' : pct1(avgTrend)}</td>
+          <td class="text-col">${verdict}</td>
+        </tr>`;
       }).join('');
-      document.getElementById('ipPerformanceSummary').innerHTML = summaryHtml || '<div class="kv-row note">尚無足夠資料可供分析</div>';
+      const placementNotes = Object.keys(placementRevenue).map(ip=>`${ip} 另有製作費收入（頻道置入類）${fmt(placementRevenue[ip],0)}（2023-2026累計，不列入本比較）`).join('；');
+      document.getElementById('ipPerformanceSummary').innerHTML = perfRows ? `
+        <div style="overflow-x:auto;"><table class="data-table">
+          <thead><tr><th class="text-col">IP</th><th>${latestY}年案件數</th><th>平均單價</th><th>業績年增</th><th>單價年增</th><th class="text-col">判讀</th></tr></thead>
+          <tbody>${perfRows}</tbody>
+        </table></div>
+        <p class="chart-note">年增以${latestY}年 vs ${prevY||'－'}年同期；任一年案件數＜${SAMPLE_MIN}筆即視為樣本小、灰字僅供參考不列警示${placementNotes?'。'+placementNotes:''}</p>
+      ` : '<div class="kv-row note">尚無足夠資料可供分析</div>';
 
       // ---- 品牌友好度（以貢獻營收為主要排序依據，合作年度數為次要參考）----
       function getBrandName(client){
@@ -5320,8 +5328,8 @@
       }
       const brandStats = {};
       const TAOTAOXI_AGENCIES = ['善苗洞商業有限公司','桃桃喜有限公司'];
-      const DXD_AGENCY = '大小點整合行銷傳播有限公司';  // 大小點的品牌為其自身客戶，不列入FF品牌友好度（2026-07指示）；代理商友好度仍保留大小點
-      valid.filter(p=>(p.type==='IP商務' || p.type==='製作服務') && !TAOTAOXI_AGENCIES.includes(p.agency) && p.agency!==DXD_AGENCY && p.ip!=='傑瑞叔叔').forEach(p=>{
+      // 2026-08-12 Blaire指示：大小點客戶品牌「列入」友好度統計（案件資料已修正無誤）
+      valid.filter(p=>(p.type==='IP商務' || p.type==='製作服務') && !TAOTAOXI_AGENCIES.includes(p.agency) && p.ip!=='傑瑞叔叔').forEach(p=>{
         const brand = getBrandName(p.name);
         if(!brand) return;
         const y = getProjectYear(p);
@@ -5335,15 +5343,14 @@
       const brandTotalRevenue = brandList.reduce((s,b)=>s+brandStats[b].revenue,0) || 1;
       const topBrands = brandList.sort((a,b)=>brandStats[b].revenue-brandStats[a].revenue).slice(0,5);
       document.getElementById('brandRepeatSummary').innerHTML = topBrands.length ? `
-        ${topBrands.map(b=>{
-          const s = brandStats[b];
-          const pct = s.revenue/brandTotalRevenue*100;
-          return `<div class="kv-row">
-            <div class="k">${b}</div>
-            <div class="v">貢獻營收 ${fmt(s.revenue,0)}（佔${pct.toFixed(1)}%）　｜　合作${s.count}次・${s.years.size}個年度</div>
-          </div>`;
-        }).join('')}
-        <div class="kv-row note">依貢獻營收排序（2023-2026全部歷史累計，已排除桃桃喜/善苗洞相關業配、大小點客戶品牌、傑瑞叔叔歷史孵化資料）；品牌名稱取自「客戶／合作方」欄位，自動去除括號內註記</div>
+        <div style="overflow-x:auto;"><table class="data-table">
+          <thead><tr><th class="text-col">品牌</th><th>貢獻營收</th><th>佔比</th><th>合作次數</th><th>合作年度</th></tr></thead>
+          <tbody>${topBrands.map(b=>{
+            const s = brandStats[b];
+            return `<tr><td class="text-col">${b}</td><td class="readonly">${fmt(s.revenue,0)}</td><td class="readonly">${(s.revenue/brandTotalRevenue*100).toFixed(1)}%</td><td class="readonly">${s.count}</td><td class="readonly">${s.years.size}</td></tr>`;
+          }).join('')}</tbody>
+        </table></div>
+        <p class="chart-note">依貢獻營收排序（2023-2026累計）；已排除桃桃喜/善苗洞相關業配與傑瑞叔叔歷史孵化資料；大小點客戶品牌已列入（2026-08-12指示）；品牌名取自「客戶／合作方」欄位，自動去除括號註記</p>
       ` : '<div class="kv-row note">尚無品牌資料</div>';
 
       // ---- 代理商友好度（貢獻營收＋合作次數並重；與品牌友好度同口徑：排除桃桃喜/善苗洞與傑瑞叔叔）----
@@ -5363,15 +5370,14 @@
       const agencyTotalRevenue = agencyList.reduce((s,a)=>s+agencyStats[a].revenue,0) || 1;
       const topAgencies = agencyList.sort((a,b)=>agencyStats[b].revenue-agencyStats[a].revenue).slice(0,5);
       document.getElementById('agencyRepeatSummary').innerHTML = agencyList.length ? `
-        ${topAgencies.map(a=>{
-          const s = agencyStats[a];
-          const pct = s.revenue/agencyTotalRevenue*100;
-          return `<div class="kv-row">
-            <div class="k">${a}</div>
-            <div class="v">貢獻營收 ${fmt(s.revenue,0)}（佔${pct.toFixed(1)}%）　｜　合作${s.count}次・${s.brands.size}個品牌・${s.years.size}個年度</div>
-          </div>`;
-        }).join('')}
-        <div class="kv-row note">依貢獻營收排序（2023-2026全部歷史累計）；代理商資料來自歷史發票「抬頭」欄位自動比對，344筆歷史專案已有對照，其餘需人工於專案詳情補填</div>
+        <div style="overflow-x:auto;"><table class="data-table">
+          <thead><tr><th class="text-col">代理商</th><th>貢獻營收</th><th>佔比</th><th>合作次數</th><th>品牌數</th><th>合作年度</th></tr></thead>
+          <tbody>${topAgencies.map(a=>{
+            const s = agencyStats[a];
+            return `<tr><td class="text-col">${a}</td><td class="readonly">${fmt(s.revenue,0)}</td><td class="readonly">${(s.revenue/agencyTotalRevenue*100).toFixed(1)}%</td><td class="readonly">${s.count}</td><td class="readonly">${s.brands.size}</td><td class="readonly">${s.years.size}</td></tr>`;
+          }).join('')}</tbody>
+        </table></div>
+        <p class="chart-note">依貢獻營收排序（2023-2026累計）；代理商資料來自歷史發票「抬頭」欄位自動比對，其餘需人工於專案詳情補填</p>
       ` : '<div class="kv-row note">目前尚無代理商資料，需要在專案詳情裡手動填寫「代理商」欄位</div>';
 
       // 結論：品牌／代理商友好度重點摘要
