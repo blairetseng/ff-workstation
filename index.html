@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>自由自在｜制式作業台 v71</title>
+<title>自由自在｜制式作業台 v72</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -646,7 +646,7 @@
   <div style="background:#fff; border:1px solid #d8d6d0; padding:48px 56px; text-align:center; max-width:380px; width:90%;">
     <div style="font-family:'Noto Serif TC',serif; font-size:12px; letter-spacing:0.3em; color:#6b6b6b; margin-bottom:8px;">自由自在</div>
     <div style="font-family:'Noto Serif TC',serif; font-size:24px; font-weight:700; margin-bottom:4px;">制式作業台</div>
-    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v71</div>
+    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v72</div>
     <button id="googleSignInBtn" onclick="signInWithGoogle()" style="width:100%; padding:13px; background:#1a1a1a; color:#fff; border:none; cursor:pointer; font-size:14px; font-family:'Noto Sans TC',sans-serif; letter-spacing:0.05em; display:flex; align-items:center; justify-content:center; gap:10px;">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
       以 Google 帳號登入
@@ -675,7 +675,7 @@
     <div class="sidebar-foot">
       表單設計與流程標準化<br>
       委刊單・零用金請款單・財務報表<br>
-      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v71</span>
+      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v72</span>
       <div id="userInfoBar" style="margin-top:10px; padding-top:10px; border-top:1px solid #3a3a3a; display:none;">
         <div id="userEmail" style="font-size:11px; color:#9a9a9a; word-break:break-all; margin-bottom:6px;"></div>
         <button onclick="signOut()" style="background:transparent; border:1px solid #555; color:#c9c9c9; font-size:11px; padding:3px 10px; cursor:pointer; border-radius:2px; width:100%;">登出</button>
@@ -5073,7 +5073,7 @@
       fromSel.value = yymms[Math.max(0, yymms.length-6)];
       document.getElementById('rqTo').value = yymms[yymms.length-1];
     }
-    const types = [...new Set(projectRegistry.map(p=>p.type).filter(t=>t && t!=='品牌商品'))];  // v71：品牌商品不列本頁
+    const types = [...new Set(projectRegistry.map(p=>p.type).filter(t=>t && t!=='品牌商品' && t!=='孵化收入'))];  // v71/72
     document.getElementById('rqIp').innerHTML = '<option value="all">全部IP</option>' + ALL_IPS_INCLUDING_ADVISORY.map(ip=>`<option value="${ip}">${ip}</option>`).join('') + '<option value="">（無IP／公司案）</option>';
     document.getElementById('rqType').innerHTML = '<option value="all">全部類別</option>' + types.map(t=>`<option value="${t}">${t}</option>`).join('');
     fromSel.dataset.bound = '1';
@@ -5093,7 +5093,7 @@
       const ym = getProjectYearMonth(p);
       if(!/^\d{4}$/.test(ym) || ym < from || ym > to) return false;
       if(ipSel !== 'all' && (p.ip||'') !== ipSel) return false;
-      if(p.type === '品牌商品') return false;  // v71：品牌商品不列本頁（月結請看營運總覽）
+      if(p.type === '品牌商品' || p.type === '孵化收入') return false;  // v71/72：品牌商品與孵化收入不列本頁
       if(typeSel !== 'all' && p.type !== typeSel) return false;
       if(p.status === '未執行(流產)'){ aborted++; return false; }
       return true;
@@ -5219,7 +5219,7 @@
         if(p.dueDate2 && p.dueDate2 < today) overdue += p.amount2;
         else if(p.dueDate2 && p.dueDate2 <= in7) dueSoon += p.amount2;
       }
-      if(getProjectYear(p)===currentYear && p.type!=='品牌商品'){  // v71：商案頁口徑不含品牌商品（月結體系，全公司口徑見營運總覽）
+      if(getProjectYear(p)===currentYear && p.type!=='品牌商品' && p.type!=='孵化收入'){  // v71/72：商案頁口徑不含品牌商品與孵化收入
         yearRevenue += (p.amount1||0) + (p.paymentMethod==='訂金+尾款' ? (p.amount2||0) : 0);
       }
     });
@@ -5432,7 +5432,7 @@
         if(!ym || !/^\d{4}$/.test(ym)) return;
         const y = 2000 + parseInt(ym.slice(0,2)), m = parseInt(ym.slice(2,4));
         if(m !== targetMonth) return;
-        if(p.type==='品牌商品') return;  // v71：品牌商品不列本頁
+        if(p.type==='品牌商品' || p.type==='孵化收入') return;  // v71/72：品牌商品與孵化收入不列本頁
         const untaxed = (p.untaxedAmount!=null && p.untaxedAmount!=='') ? p.untaxedAmount : (p.amount1||0);
         const amt = untaxed + (p.paymentMethod==='訂金+尾款' ? (p.amount2||0)/1.05 : 0);
         if(!byYear[y]) byYear[y] = {count:0, total:0, cats:{}, ips:{}};
@@ -5511,7 +5511,7 @@
     document.getElementById('projectDetailCode').textContent = p.code;
 
     const ipOptions = ALL_IPS_INCLUDING_ADVISORY.map(ip=>`<option value="${ip}" ${p.ip===ip?'selected':''}>${ip}</option>`).join('');
-    const typeOptions = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅'].map(t=>`<option value="${t}" ${p.type===t?'selected':''}>${t}</option>`).join('');
+    const typeOptions = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅','孵化收入'].map(t=>`<option value="${t}" ${p.type===t?'selected':''}>${t}</option>`).join('');
     const statusOptions = ['洽談中','已確認','執行中','已結案','未執行(流產)'].map(s=>`<option value="${s}" ${p.status===s?'selected':''}>${s}</option>`).join('');
     const methodOptions = ['一次付清','訂金+尾款'].map(m=>`<option value="${m}" ${p.paymentMethod===m?'selected':''}>${m}</option>`).join('');
     const isSplit = p.paymentMethod==='訂金+尾款';
@@ -5632,7 +5632,7 @@
     });
     const years = Object.keys(byYear).map(Number).sort((a,b)=>a-b);
     if(!years.length){ alert('沒有可匯出的資料'); return; }
-    const CAT_ORDER = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅'];
+    const CAT_ORDER = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅','孵化收入'];
     const catRank = c => { const i = CAT_ORDER.indexOf(c); return i<0 ? 99 : i; };
     const wb = XLSX.utils.book_new();
     years.forEach(y=>{
@@ -5978,7 +5978,7 @@
   // =====================================================
   // 公司總覽（自動匯總專案總表＋YT/FB收入，不需手動輸入）
   // =====================================================
-  const CATEGORY_COLOR3 = {'IP商務':'#35506B', '製作服務':'#6B8A6F', '空間租賃':'#7A5C7E', '品牌商品':'#9C4A3C', '授權版稅':'#6B6B6B', 'YT收入':'#A88A54', 'FB收入':'#4A7A9C'};
+  const CATEGORY_COLOR3 = {'IP商務':'#35506B', '製作服務':'#6B8A6F', '空間租賃':'#7A5C7E', '品牌商品':'#9C4A3C', '授權版稅':'#6B6B6B', '孵化收入':'#8A8378', 'YT收入':'#A88A54', 'FB收入':'#4A7A9C'};
 
   function renderCompanyOverview(){
     try{
@@ -6083,7 +6083,7 @@
         <div class="stat-card"><div class="stat-label">${selYear}年公司合計（IP業務）</div><div class="stat-value">${fmt(aggSum.retained,0)}</div><div class="stat-sub">公司分成 ${fmt(aggSum.operating,0)}＋孵化收入 ${fmt(aggSum.costRecov,0)}</div></div>
       `;
 
-      const ALL_CATEGORIES = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅','YT收入','FB收入'];
+      const ALL_CATEGORIES = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅','孵化收入','YT收入','FB收入'];
       ALL_CATEGORIES.forEach(c=>{ if(!(c in byCat)) byCat[c]=0; });
       const cats = ALL_CATEGORIES.slice().sort((a,b)=>byCat[b]-byCat[a]);
       document.getElementById('overviewCategoryBreakdown').innerHTML = cats.map(c=>{
@@ -6168,7 +6168,7 @@
           ? `結論：${selYear}年公司淨收入 ${fmt(bizSum.net,0)}（未扣商品成本與營運費用），最大來源為「${topLine.name}」佔 ${fmt(topLine.net/bizSum.net*100,1)}%`
           : '尚無資料';
         document.getElementById('bizlineNote').innerHTML =
-          '口徑：全表未稅（原始僅含稅者以÷1.05估算）；YT為後台分配額。公司淨收入＝收入－分潤/獎金支出，未扣商品成本、製作外包以外之人事與營運費用——此表回答「錢從哪來、流到哪去、留下多少」，非最終淨利。';
+          '口徑：全表未稅（原始僅含稅者以÷1.05估算）；YT為後台分配額。公司淨收入＝收入－分潤/獎金支出，未扣商品成本、製作外包以外之人事與營運費用——此表回答「錢從哪來、流到哪去、留下多少」，非最終淨利。孵化收入類（YTL補付發票）為IP業務線孵化收入之收款憑證，已含於IP業務線淨額，不重複列計。';
       }
 
       const trendYears = allYears.slice().reverse();
