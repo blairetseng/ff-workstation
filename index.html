@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>自由自在｜制式作業台 v72</title>
+<title>自由自在｜制式作業台 v73</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -646,7 +646,7 @@
   <div style="background:#fff; border:1px solid #d8d6d0; padding:48px 56px; text-align:center; max-width:380px; width:90%;">
     <div style="font-family:'Noto Serif TC',serif; font-size:12px; letter-spacing:0.3em; color:#6b6b6b; margin-bottom:8px;">自由自在</div>
     <div style="font-family:'Noto Serif TC',serif; font-size:24px; font-weight:700; margin-bottom:4px;">制式作業台</div>
-    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v72</div>
+    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v73</div>
     <button id="googleSignInBtn" onclick="signInWithGoogle()" style="width:100%; padding:13px; background:#1a1a1a; color:#fff; border:none; cursor:pointer; font-size:14px; font-family:'Noto Sans TC',sans-serif; letter-spacing:0.05em; display:flex; align-items:center; justify-content:center; gap:10px;">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
       以 Google 帳號登入
@@ -675,7 +675,7 @@
     <div class="sidebar-foot">
       表單設計與流程標準化<br>
       委刊單・零用金請款單・財務報表<br>
-      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v72</span>
+      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v73</span>
       <div id="userInfoBar" style="margin-top:10px; padding-top:10px; border-top:1px solid #3a3a3a; display:none;">
         <div id="userEmail" style="font-size:11px; color:#9a9a9a; word-break:break-all; margin-bottom:6px;"></div>
         <button onclick="signOut()" style="background:transparent; border:1px solid #555; color:#c9c9c9; font-size:11px; padding:3px 10px; cursor:pointer; border-radius:2px; width:100%;">登出</button>
@@ -4075,7 +4075,7 @@
     // 四IP「已對帳結案期間」累計未稅所得基準——僅涵蓋至 cutoff（2026年6月，已與權威Excel/PDF逐筆對帳完成之期間）。
     // cutoff 之後的新案屬正常業務成長，不列入測試，避免每談成新案就誤報（狼來了效應）。對帳完成新期間後，更新cutoff與基準值。
     cutoff: {year:2026, month:6},
-    ipIncome: {'簡少年':4291183, '蝌蚪老師':853762, '蕭小M':77125, '冰蹦拉':3212009},  // 至2026年6月（2026-08-12依最新版成本表校正YT 12月匯率31.38與2/3月實收後重算；五月前已撥付簡少年之分潤維持原數，差額不追溯）
+    ipIncome: {'簡少年':4291183, '蝌蚪老師':853762, '蕭小M':77125, '冰蹦拉':3215520},  // 至2026年6月（2026-08-24補登六月magimix 2606-06後冰蹦拉+3,511；前版沿革見changelog）
     tolerance: 3,
   };
   function monthLeqCutoff(mLabel){
@@ -5533,7 +5533,10 @@
       <div class="filter-row"><label style="width:100px;">未稅金額</label><input type="number" id="pdUntaxedAmount" value="${p.untaxedAmount!=null&&p.untaxedAmount!==''?Math.round(p.untaxedAmount):''}" placeholder="分潤計算依據，務必填寫" style="max-width:160px; border:1px solid var(--line); padding:8px;">
         <span style="font-size:12px; color:var(--ash);">← 分潤計算一律用這個欄位，不是下面的「第一筆金額」</span></div>
       <div class="filter-row"><label style="width:100px;">第一筆金額</label><input type="number" id="pdAmount1" value="${Math.round(p.amount1||0)}" style="max-width:160px; border:1px solid var(--line); padding:8px;">
-        <span style="font-size:12px; color:var(--ash);">← 含稅總計，用於應收帳款/現金流，不用於分潤（發票為整數，顯示與儲存皆取整）</span></div>
+        <span style="font-size:12px; color:var(--ash);">← 含稅總計，用於應收/現金流</span>
+        ${(()=>{ const u=(p.untaxedAmount!=null&&p.untaxedAmount!=='')?Number(p.untaxedAmount):0; const std=Math.round(u*1.05); const a=Math.round(p.amount1||0);
+          return (u>0 && a>0 && p.paymentMethod!=='訂金+尾款' && Math.abs(a-std)>1)
+            ? `<span style="font-size:12px; color:#9C4A3C;">⚠ 含稅≠未稅×1.05（標準應為 ${fmt(std,0)}）<button onclick="pdApplyStdTax(${std})" style="margin-left:4px; border:1px solid #9C4A3C; background:#fff; color:#9C4A3C; padding:1px 8px; cursor:pointer; font-size:11px;">套用</button>　免稅/特例案請忽略</span>` : ''; })()}</div>
       <div class="filter-row">
         <label style="width:100px;">第一筆預計日</label><input type="date" id="pdDueDate1" value="${p.dueDate1||''}" style="border:1px solid var(--line); padding:8px;">
         <label style="width:50px;">已付</label><input type="checkbox" id="pdPaid1" ${p.paid1?'checked':''}></div>
@@ -5563,6 +5566,12 @@
       renderProjectDetail(); renderProjectRegistry(); saveProjectRegistry();
     });
 
+    window.pdApplyStdTax = function(std){
+      const el = document.getElementById('pdAmount1');
+      if(!el) return;
+      el.value = std;
+      el.dispatchEvent(new Event('change', {bubbles:false}));
+    };
     const fieldMap = {pdIp:'ip', pdType:'type', pdName:'name', pdCoopItem:'coopItem', pdAgency:'agency', pdConfirmDate:'confirmDate',
       pdStatus:'status', pdOwner:'owner', pdPaymentMethod:'paymentMethod', pdUntaxedAmount:'untaxedAmount', pdAmount1:'amount1', pdDueDate1:'dueDate1',
       pdPaid1:'paid1', pdAmount2:'amount2', pdDueDate2:'dueDate2', pdPaid2:'paid2', pdNote:'note'};
@@ -5575,10 +5584,15 @@
         if(e.target.type==='checkbox') val = e.target.checked;
         else if(e.target.type==='number') val = parseFloat(e.target.value)||0;
         else val = e.target.value;
+        const prevVal = p[f];  // v73：記舊值供未稅→含稅標準關係判斷
         p[f] = val;
-        // v49 未稅/含稅自動補全：填其中一邊、另一邊為0或空時自動換算±5%；另一邊已有值則不覆蓋（保護「未稅=含稅」等特例）
-        if(f==='untaxedAmount' && val > 0 && !(p.amount1 > 0)){
-          p.amount1 = Math.round(val * 1.05 * 100) / 100;
+        // v49/v73 未稅/含稅自動換算：另一邊為空自動補；若另一邊原本就是「舊未稅×1.05」（標準5%關係）則跟著更新；
+        // 僅在另一邊是刻意的非標準值（如免稅案 未稅=含稅）時不覆蓋，並由表單提示列警告
+        if(f==='untaxedAmount' && val > 0){
+          const prevStd = Math.round((parseFloat(prevVal)||0) * 1.05);
+          if(!(p.amount1 > 0) || Math.abs(Math.round(p.amount1) - prevStd) <= 1){
+            p.amount1 = Math.round(val * 1.05);
+          }
         }
         if(f==='amount1' && val > 0 && !(p.untaxedAmount > 0)){
           p.untaxedAmount = Math.round(val / 1.05 * 100) / 100;
