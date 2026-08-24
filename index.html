@@ -3904,7 +3904,7 @@
     const items = [
       {code:'SO-'+yymm, name:'油掰掰糖解解', val:parseFloat(document.getElementById('wizBrandSo').value)},
       {code:'HOLO-'+yymm, name:'福祿葫蘆', val:parseFloat(document.getElementById('wizBrandHo').value)},
-      {code:'ZW-'+yymm, name:'紫微斗數課', val:parseFloat(document.getElementById('wizBrandZw').value)},
+      {code:'ZW-'+yymm, name:'紫微斗數課', val:parseFloat(document.getElementById('wizBrandZw').value), noteSuffix:'；填入數字已為公司分潤淨額（2026-08-17 Blaire確認），不再參與任何拆分'},
     ];
     let changed = [];
     items.forEach(it=>{
@@ -3917,7 +3917,7 @@
           confirmDate:cd, status:'已結案', owner:'', paymentMethod:'一次付清',
           amount1:it.val, untaxedAmount:it.val, dueDate1:'', paid1:true,
           amount2:0, dueDate2:'', paid2:false,
-          note:`${year}年${month}月電商月結（月結精靈登錄）；帳款已收`
+          note:`${year}年${month}月電商月結（月結精靈登錄）；帳款已收${it.noteSuffix||''}`
         });
       }
       changed.push(it.name+' '+it.val.toLocaleString());
