@@ -6271,7 +6271,8 @@
         const amt = (p.amount1||0) + (p.paymentMethod==='訂金+尾款' ? (p.amount2||0):0);
         let key;
         if((p.name||'').includes('老K')) key = '老K面相';
-        else if((p.name||'').includes('頻道') || (p.name||'').includes('製作費')) key = '頻道補入';
+        else if(/^KE-FEE/.test(p.code||'')) key = '頻道補入-蝌蚪(運營費)';  // v75.1：頻道補入依IP分列（Blaire指示）
+        else if(/-YTL$/.test(p.code||'') || (p.name||'').includes('頻道') || (p.name||'').includes('製作費')) key = '頻道補入-簡少年';
         else if(p.agency === '求真易學有限公司') key = '求真易學社';
         else if(p.agency === '大小點整合行銷傳播有限公司') key = '大小點';
         else if(['善苗洞商業有限公司','桃桃喜有限公司'].includes(p.agency)) key = '桃桃喜置入';
