@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>自由自在｜制式作業台 v74</title>
+<title>自由自在｜制式作業台 v75</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -646,7 +646,7 @@
   <div style="background:#fff; border:1px solid #d8d6d0; padding:48px 56px; text-align:center; max-width:380px; width:90%;">
     <div style="font-family:'Noto Serif TC',serif; font-size:12px; letter-spacing:0.3em; color:#6b6b6b; margin-bottom:8px;">自由自在</div>
     <div style="font-family:'Noto Serif TC',serif; font-size:24px; font-weight:700; margin-bottom:4px;">制式作業台</div>
-    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v74</div>
+    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v75</div>
     <button id="googleSignInBtn" onclick="signInWithGoogle()" style="width:100%; padding:13px; background:#1a1a1a; color:#fff; border:none; cursor:pointer; font-size:14px; font-family:'Noto Sans TC',sans-serif; letter-spacing:0.05em; display:flex; align-items:center; justify-content:center; gap:10px;">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
       以 Google 帳號登入
@@ -675,7 +675,7 @@
     <div class="sidebar-foot">
       表單設計與流程標準化<br>
       委刊單・零用金請款單・財務報表<br>
-      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v74</span>
+      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v75</span>
       <div id="userInfoBar" style="margin-top:10px; padding-top:10px; border-top:1px solid #3a3a3a; display:none;">
         <div id="userEmail" style="font-size:11px; color:#9a9a9a; word-break:break-all; margin-bottom:6px;"></div>
         <button onclick="signOut()" style="background:transparent; border:1px solid #555; color:#c9c9c9; font-size:11px; padding:3px 10px; cursor:pointer; border-radius:2px; width:100%;">登出</button>
@@ -5101,7 +5101,7 @@
       fromSel.value = yymms[Math.max(0, yymms.length-6)];
       document.getElementById('rqTo').value = yymms[yymms.length-1];
     }
-    const types = [...new Set(projectRegistry.map(p=>p.type).filter(t=>t && t!=='品牌商品' && t!=='孵化收入'))];  // v71/72
+    const types = [...new Set(projectRegistry.map(p=>p.type).filter(t=>t && t!=='品牌商品'))];  // v75
     document.getElementById('rqIp').innerHTML = '<option value="all">全部IP</option>' + ALL_IPS_INCLUDING_ADVISORY.map(ip=>`<option value="${ip}">${ip}</option>`).join('') + '<option value="">（無IP／公司案）</option>';
     document.getElementById('rqType').innerHTML = '<option value="all">全部類別</option>' + types.map(t=>`<option value="${t}">${t}</option>`).join('');
     fromSel.dataset.bound = '1';
@@ -5121,7 +5121,7 @@
       const ym = getProjectYearMonth(p);
       if(!/^\d{4}$/.test(ym) || ym < from || ym > to) return false;
       if(ipSel !== 'all' && (p.ip||'') !== ipSel) return false;
-      if(p.type === '品牌商品' || p.type === '孵化收入') return false;  // v71/72：品牌商品與孵化收入不列本頁
+      if(p.type === '品牌商品' || /-YTL$|^KE-FEE/.test(p.code||'')) return false;  // v75：品牌商品/頻道補入/運營費不列本頁（全公司口徑見營運總覽）
       if(typeSel !== 'all' && p.type !== typeSel) return false;
       if(p.status === '未執行(流產)'){ aborted++; return false; }
       return true;
@@ -5247,7 +5247,7 @@
         if(p.dueDate2 && p.dueDate2 < today) overdue += p.amount2;
         else if(p.dueDate2 && p.dueDate2 <= in7) dueSoon += p.amount2;
       }
-      if(getProjectYear(p)===currentYear && p.type!=='品牌商品' && p.type!=='孵化收入'){  // v71/72：商案頁口徑不含品牌商品與孵化收入
+      if(getProjectYear(p)===currentYear && p.type!=='品牌商品' && !/-YTL$|^KE-FEE/.test(p.code||'')){  // v75：商案頁不含品牌商品、頻道補入(YTL)與運營費(KE-FEE)——維持與Excel進項表鏡像
         yearRevenue += (p.amount1||0) + (p.paymentMethod==='訂金+尾款' ? (p.amount2||0) : 0);
       }
     });
@@ -5379,7 +5379,7 @@
       const brandStats = {};
       const TAOTAOXI_AGENCIES = ['善苗洞商業有限公司','桃桃喜有限公司'];
       // 2026-08-12 Blaire指示：大小點客戶品牌「列入」友好度統計（案件資料已修正無誤）
-      valid.filter(p=>(p.type==='IP商務' || p.type==='製作服務') && !TAOTAOXI_AGENCIES.includes(p.agency) && p.ip!=='傑瑞叔叔').forEach(p=>{
+      valid.filter(p=>(p.type==='IP商務' || p.type==='製作服務') && !TAOTAOXI_AGENCIES.includes(p.agency) && p.ip!=='傑瑞叔叔' && !/-YTL$|^KE-FEE/.test(p.code||'')).forEach(p=>{
         const brand = getBrandName(p.name);
         if(!brand) return;
         const y = getProjectYear(p);
@@ -5405,7 +5405,7 @@
 
       // ---- 代理商友好度（貢獻營收＋合作次數並重；與品牌友好度同口徑：排除桃桃喜/善苗洞與傑瑞叔叔）----
       const agencyStats = {};
-      valid.filter(p=>(p.type==='IP商務' || p.type==='製作服務') && !TAOTAOXI_AGENCIES.includes(p.agency) && p.ip!=='傑瑞叔叔').forEach(p=>{
+      valid.filter(p=>(p.type==='IP商務' || p.type==='製作服務') && !TAOTAOXI_AGENCIES.includes(p.agency) && p.ip!=='傑瑞叔叔' && !/-YTL$|^KE-FEE/.test(p.code||'')).forEach(p=>{
         const agency = (p.agency||'').trim();
         if(!agency) return;
         const y = getProjectYear(p);
@@ -5460,7 +5460,7 @@
         if(!ym || !/^\d{4}$/.test(ym)) return;
         const y = 2000 + parseInt(ym.slice(0,2)), m = parseInt(ym.slice(2,4));
         if(m !== targetMonth) return;
-        if(p.type==='品牌商品' || p.type==='孵化收入') return;  // v71/72：品牌商品與孵化收入不列本頁
+        if(p.type==='品牌商品' || /-YTL$|^KE-FEE/.test(p.code||'')) return;  // v75：品牌商品/頻道補入/運營費不列本頁
         const untaxed = (p.untaxedAmount!=null && p.untaxedAmount!=='') ? p.untaxedAmount : (p.amount1||0);
         const amt = untaxed + (p.paymentMethod==='訂金+尾款' ? (p.amount2||0)/1.05 : 0);
         if(!byYear[y]) byYear[y] = {count:0, total:0, cats:{}, ips:{}};
@@ -5539,7 +5539,7 @@
     document.getElementById('projectDetailCode').textContent = p.code;
 
     const ipOptions = ALL_IPS_INCLUDING_ADVISORY.map(ip=>`<option value="${ip}" ${p.ip===ip?'selected':''}>${ip}</option>`).join('');
-    const typeOptions = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅','孵化收入'].map(t=>`<option value="${t}" ${p.type===t?'selected':''}>${t}</option>`).join('');
+    const typeOptions = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅'].map(t=>`<option value="${t}" ${p.type===t?'selected':''}>${t}</option>`).join('');
     const statusOptions = ['洽談中','已確認','執行中','已結案','未執行(流產)'].map(s=>`<option value="${s}" ${p.status===s?'selected':''}>${s}</option>`).join('');
     const methodOptions = ['一次付清','訂金+尾款'].map(m=>`<option value="${m}" ${p.paymentMethod===m?'selected':''}>${m}</option>`).join('');
     const isSplit = p.paymentMethod==='訂金+尾款';
@@ -5674,7 +5674,7 @@
     });
     const years = Object.keys(byYear).map(Number).sort((a,b)=>a-b);
     if(!years.length){ alert('沒有可匯出的資料'); return; }
-    const CAT_ORDER = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅','孵化收入'];
+    const CAT_ORDER = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅'];
     const catRank = c => { const i = CAT_ORDER.indexOf(c); return i<0 ? 99 : i; };
     const wb = XLSX.utils.book_new();
     years.forEach(y=>{
@@ -6020,7 +6020,7 @@
   // =====================================================
   // 公司總覽（自動匯總專案總表＋YT/FB收入，不需手動輸入）
   // =====================================================
-  const CATEGORY_COLOR3 = {'IP商務':'#35506B', '製作服務':'#6B8A6F', '空間租賃':'#7A5C7E', '品牌商品':'#9C4A3C', '授權版稅':'#6B6B6B', '孵化收入':'#8A8378', 'YT收入':'#A88A54', 'FB收入':'#4A7A9C'};
+  const CATEGORY_COLOR3 = {'IP商務':'#35506B', '製作服務':'#6B8A6F', '空間租賃':'#7A5C7E', '品牌商品':'#9C4A3C', '授權版稅':'#6B6B6B', 'YT收入':'#A88A54', 'FB收入':'#4A7A9C'};
 
   function renderCompanyOverview(){
     try{
@@ -6086,6 +6086,7 @@
       // v65：留存拆為「營運留存」（經常性分潤利差）與「孵化成本回收」（合約性，會隨合約結束消失）
       // 簡少年：YT合約=9000USD/月孵化成本基準，基準內全屬成本回收（數學上其YT留存恆=9000×匯率+超額半數）
       // 蝌蚪老師：運營費60,000/月（2024/8–2026/4，kedouFeeForMonth內建視窗），月報以抵扣處理故不在ipMonthTotal，此處以「應付減項」計入
+      let _feeY=0, _topupY=0;  // v75：運營費與簡補付累計（全公司收入結構防重複用——此二者已以製作服務入帳）
       const retainedAgg = ALL_IPS.map(ip=>{
         let revenue=0, payable=0, cost=0, retained=0, costRecov=0, checkErr=0;
         yearMonths.forEach(m=>{
@@ -6096,9 +6097,10 @@
           if(ip==='簡少年'){
             const yt = ytFigureFor(ip, m);
             if(yt && t.ytBackendTwd>0) recov = Math.min(t.ytRetained, 9000*yt.rate); // 基準內=成本回收；超額半數留在營運
+            _topupY += Math.max(0, -(t.ytShare||0));  // 補付流入（已另以YTL發票列製作服務）
           }else if(ip==='蝌蚪老師'){
             const fee = kedouFeeForMonth(reportMonthToYYMM(m));
-            if(fee>0){ pay -= fee; ret += fee; recov += fee; } // 運營費：抵扣應付=公司實收，屬成本回收
+            if(fee>0){ pay -= fee; ret += fee; recov += fee; _feeY += fee; } // 運營費（已另以KE-FEE應計列製作服務）
           }
           revenue += rev; payable += pay; cost += c; retained += ret; costRecov += recov;
           checkErr += Math.abs((rev - c - pay) - ret); // 恆等式驗算：營收-成本-應付(淨) = 留存
@@ -6125,7 +6127,7 @@
         <div class="stat-card"><div class="stat-label">${selYear}年公司合計（IP業務）</div><div class="stat-value">${fmt(aggSum.retained,0)}</div><div class="stat-sub">公司分成 ${fmt(aggSum.operating,0)}＋孵化收入 ${fmt(aggSum.costRecov,0)}</div></div>
       `;
 
-      const ALL_CATEGORIES = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅','孵化收入','YT收入','FB收入'];
+      const ALL_CATEGORIES = ['IP商務','製作服務','空間租賃','品牌商品','授權版稅','YT收入','FB收入'];  // v75：孵化收入類別取消，頻道補入/運營費統一列製作服務（2026-08-26 Blaire裁定）
       ALL_CATEGORIES.forEach(c=>{ if(!(c in byCat)) byCat[c]=0; });
       const cats = ALL_CATEGORIES.slice().sort((a,b)=>byCat[b]-byCat[a]);
       document.getElementById('overviewCategoryBreakdown').innerHTML = cats.map(c=>{
@@ -6184,7 +6186,7 @@
           .reduce((s,p)=>s+untaxOf(p),0);
         const brandRev = sumType(['品牌商品']);
         const lines = [
-          {name:'IP業務（商案＋YT）', rev:aggSum.revenue, out:aggSum.payable, net:aggSum.retained, note:'支出=IP分成（淨額，孵化收入已抵）'},
+          {name:'IP業務（商案＋YT）', rev:aggSum.revenue, out:aggSum.payable + _feeY + _topupY, net:aggSum.retained - _feeY - _topupY, note:'不含IP回付——頻道補入/運營費列於製作服務線（v75統一口徑）'},
           {name:'品牌商品（油掰掰/福祿葫蘆）', rev:brandRev, out:bolaBonusYear, net:brandRev-bolaBonusYear, note:'支出=開團獎金；未扣商品成本'},
           {name:'製作服務', rev:sumType(['製作服務']), out:0, net:sumType(['製作服務'])},
           {name:'空間租賃＋授權版稅', rev:sumType(['空間租賃','授權版稅']), out:0, net:sumType(['空間租賃','授權版稅'])},
@@ -6210,7 +6212,7 @@
           ? `結論：${selYear}年公司淨收入 ${fmt(bizSum.net,0)}（未扣商品成本與營運費用），最大來源為「${topLine.name}」佔 ${fmt(topLine.net/bizSum.net*100,1)}%`
           : '尚無資料';
         document.getElementById('bizlineNote').innerHTML =
-          '口徑：全表未稅（原始僅含稅者以÷1.05估算）；YT為後台分配額。公司淨收入＝收入－分潤/獎金支出，未扣商品成本、製作外包以外之人事與營運費用——此表回答「錢從哪來、流到哪去、留下多少」，非最終淨利。孵化收入類（YTL補付發票）為IP業務線孵化收入之收款憑證，已含於IP業務線淨額，不重複列計。';
+          '口徑：全表未稅（原始僅含稅者以÷1.05估算）；YT為後台分配額。公司淨收入＝收入－分潤/獎金支出，未扣商品成本、製作外包以外之人事與營運費用——非最終淨利。頻道補入(YTL)與蝌蚪運營費(KE-FEE)統一列於製作服務線（與2023-25口徑一致）；IP業務線淨額已剔除該等回付，不重複計算。';
       }
 
       const trendYears = allYears.slice().reverse();
