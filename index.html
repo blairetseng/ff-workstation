@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>自由自在｜制式作業台 v76</title>
+<title>自由自在｜制式作業台 v77</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -646,7 +646,7 @@
   <div style="background:#fff; border:1px solid #d8d6d0; padding:48px 56px; text-align:center; max-width:380px; width:90%;">
     <div style="font-family:'Noto Serif TC',serif; font-size:12px; letter-spacing:0.3em; color:#6b6b6b; margin-bottom:8px;">自由自在</div>
     <div style="font-family:'Noto Serif TC',serif; font-size:24px; font-weight:700; margin-bottom:4px;">制式作業台</div>
-    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v76</div>
+    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v77</div>
     <button id="googleSignInBtn" onclick="signInWithGoogle()" style="width:100%; padding:13px; background:#1a1a1a; color:#fff; border:none; cursor:pointer; font-size:14px; font-family:'Noto Sans TC',sans-serif; letter-spacing:0.05em; display:flex; align-items:center; justify-content:center; gap:10px;">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
       以 Google 帳號登入
@@ -675,7 +675,7 @@
     <div class="sidebar-foot">
       表單設計與流程標準化<br>
       委刊單・零用金請款單・財務報表<br>
-      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v76</span>
+      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v77</span>
       <div id="userInfoBar" style="margin-top:10px; padding-top:10px; border-top:1px solid #3a3a3a; display:none;">
         <div id="userEmail" style="font-size:11px; color:#9a9a9a; word-break:break-all; margin-bottom:6px;"></div>
         <button onclick="signOut()" style="background:transparent; border:1px solid #555; color:#c9c9c9; font-size:11px; padding:3px 10px; cursor:pointer; border-radius:2px; width:100%;">登出</button>
@@ -4281,7 +4281,39 @@
     clearTimeout(_toastTimer);
     _toastTimer = setTimeout(()=>{ t.style.display='none'; }, ok ? 1500 : 5000);
   }
-  function showLoginScreen(){
+  
+// v77 授權閘門：白名單外的帳號不得進入作業台
+async function ffCheckAllowed(email){
+  try{
+    const { data, error } = await _sb.from('ff_user_roles').select('email');
+    if(error || !data) return false;
+    const me = String(email||'').toLowerCase();
+    return data.some(r => String(r.email||'').toLowerCase() === me);
+  }catch(e){ return false; }
+}
+function showDeniedScreen(email){
+  try{ document.getElementById('loginOverlay').style.display='none'; }catch(e){}
+  try{ document.querySelector('.app').style.display='none'; }catch(e){}
+  let el = document.getElementById('deniedOverlay');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'deniedOverlay';
+    el.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#f5f5f4;font-family:"Noto Sans CJK TC","Noto Sans TC",sans-serif;';
+    el.innerHTML = '<div style="max-width:430px;padding:40px;text-align:center;">'
+      + '<div style="font-size:12px;letter-spacing:.22em;color:#9a9a97;margin-bottom:30px;">FREE &amp; EASY \u00B7 \u81EA\u7531\u81EA\u5728</div>'
+      + '<div style="font-size:21px;color:#1f1f1f;margin-bottom:20px;letter-spacing:.03em;">\u6B64\u5E33\u865F\u672A\u7372\u6388\u6B0A</div>'
+      + '<div style="font-size:12px;color:#9a9a97;margin-bottom:6px;">\u76EE\u524D\u767B\u5165\u5E33\u865F</div>'
+      + '<div id="deniedEmail" style="font-size:14px;color:#1f1f1f;margin-bottom:26px;word-break:break-all;"></div>'
+      + '<div style="font-size:13px;line-height:2;color:#6b6b68;margin-bottom:34px;">\u5236\u5F0F\u4F5C\u696D\u53F0\u50C5\u958B\u653E\u7D66\u540D\u55AE\u5167\u7684\u6210\u54E1\u3002<br>\u9700\u8981\u5B58\u53D6\u6B0A\u9650\u8ACB\u806F\u7D61\u7BA1\u7406\u8005\u3002</div>'
+      + '<button id="deniedSignOut" style="padding:10px 30px;border:1px solid #c9c9c6;background:#fff;color:#1f1f1f;font-size:14px;cursor:pointer;border-radius:2px;letter-spacing:.05em;">\u63DB\u4E00\u500B\u5E33\u865F\u767B\u5165</button>'
+      + '</div>';
+    document.body.appendChild(el);
+    el.querySelector('#deniedSignOut').addEventListener('click', function(){ signOut(); });
+  }
+  el.querySelector('#deniedEmail').textContent = email || '';
+  el.style.display = 'flex';
+}
+function showLoginScreen(){
     document.getElementById('loginOverlay').style.display = 'flex';
     document.querySelector('.app').style.display = 'none';
   }
@@ -4304,6 +4336,7 @@
       return;
     }
     _currentUser = session.user;
+    if(!(await ffCheckAllowed(session.user.email))){ showDeniedScreen(session.user.email); return; }
     showApp();
 
     await initStorageAdapter();
@@ -5726,7 +5759,7 @@
     return {subtotal, tax, total: subtotal+tax};
   }
 
-  function renderOrders(){ if(!document.getElementById('orderBody')) return;  // v76：委刊單頁面已移除（Blaire指示：改由夥伴手動填寫）
+  function renderOrders(){ if(!document.getElementById('orderBody')) return;  // v77：委刊單頁面已移除（Blaire指示：改由夥伴手動填寫）
     const filterSel = document.getElementById('orderStatusFilter');
     const filterVal = filterSel.value;
     const body = document.getElementById('orderBody');
