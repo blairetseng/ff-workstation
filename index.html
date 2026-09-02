@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>自由自在｜制式作業台 v75</title>
+<title>自由自在｜制式作業台 v76</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -646,7 +646,7 @@
   <div style="background:#fff; border:1px solid #d8d6d0; padding:48px 56px; text-align:center; max-width:380px; width:90%;">
     <div style="font-family:'Noto Serif TC',serif; font-size:12px; letter-spacing:0.3em; color:#6b6b6b; margin-bottom:8px;">自由自在</div>
     <div style="font-family:'Noto Serif TC',serif; font-size:24px; font-weight:700; margin-bottom:4px;">制式作業台</div>
-    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v75</div>
+    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v76</div>
     <button id="googleSignInBtn" onclick="signInWithGoogle()" style="width:100%; padding:13px; background:#1a1a1a; color:#fff; border:none; cursor:pointer; font-size:14px; font-family:'Noto Sans TC',sans-serif; letter-spacing:0.05em; display:flex; align-items:center; justify-content:center; gap:10px;">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
       以 Google 帳號登入
@@ -665,7 +665,7 @@
     <nav class="nav" id="nav">
       <div class="nav-item active" data-view="overview">FF營運總覽<span class="nav-tag live">建置中</span></div>
       <div class="nav-item" data-view="project">商案營收總覽<span class="nav-tag live">建置中</span></div>
-      <div class="nav-item" data-view="order">委刊單<span class="nav-tag live">建置中</span></div>
+      
       <div class="nav-item" data-view="ytsplit">YT營收總覽<span class="nav-tag live">建置中</span></div>
       <div class="nav-item" data-view="ipreport">IP收入月報<span class="nav-tag live">建置中</span></div>
       <div class="nav-item" data-view="finance">IP撥款彙總表<span class="nav-tag live">建置中</span></div>
@@ -675,7 +675,7 @@
     <div class="sidebar-foot">
       表單設計與流程標準化<br>
       委刊單・零用金請款單・財務報表<br>
-      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v75</span>
+      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v76</span>
       <div id="userInfoBar" style="margin-top:10px; padding-top:10px; border-top:1px solid #3a3a3a; display:none;">
         <div id="userEmail" style="font-size:11px; color:#9a9a9a; word-break:break-all; margin-bottom:6px;"></div>
         <button onclick="signOut()" style="background:transparent; border:1px solid #555; color:#c9c9c9; font-size:11px; padding:3px 10px; cursor:pointer; border-radius:2px; width:100%;">登出</button>
@@ -851,9 +851,7 @@
             <h3>商案營收總覽</h3>
             <p>案件從開案、執行到結案的完整生命週期追蹤，統一專案編號主鍵，與委刊單、應收帳款串接。</p>
           </div>
-          <div class="module-card" data-view="order">
-            <div class="module-num">02</div>
-            <span class="module-status status-building">建置中</span>
+          <span class="module-status status-building">建置中</span>
             <h3>委刊單</h3>
             <p>依專案編號開立，記錄客戶憑證資訊、未稅金額與付款條件。</p>
           </div>
@@ -1064,85 +1062,6 @@
           
 </div>
 
-    <div class="view" id="view-order">
-      <div class="top-row">
-        <div>
-          <div class="eyebrow">MODULE 02</div>
-          <h1>委刊單</h1>
-        </div>
-      </div>
-
-      <div class="demo-banner">
-        ⚠ 目前為示範假資料。客戶回覆填好的資訊，直接把文字貼給 Claude，會自動解析欄位並更新進這裡。匯出後交給 Cowork 套上正式報價單格式（含法律條款），即可直接給客戶回簽。
-      </div>
-
-      <section>
-        <div class="section-head">
-          <h2>我方固定資訊</h2>
-          <div class="rule"></div>
-        </div>
-        <div class="summary-panel">
-          <div class="kv-row"><div class="k">執行單位</div><div class="v">自由自在股份有限公司</div></div>
-          <div class="kv-row"><div class="k">統一編號</div><div class="v">90042473</div></div>
-          <div class="kv-row"><div class="k">通訊地址</div><div class="v">台北市信義區忠孝東路五段372巷28弄5號1樓</div></div>
-        </div>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <h2>委刊單清單</h2>
-          <div class="rule"></div>
-          <div class="count" id="orderCount">0 筆</div>
-        </div>
-        <div class="filter-row">
-          <label>狀態</label>
-          <select id="orderStatusFilter" class="month-inline">
-            <option value="all">全部</option>
-            <option value="未回簽">未回簽</option>
-            <option value="已回簽">已回簽</option>
-          </select>
-          <span class="filter-hint">點列可展開編輯項目明細，最新開立排在最上面</span>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table" id="orderTable">
-            <thead>
-              <tr>
-                <th class="text-col">單號</th>
-                <th class="text-col">專案名稱</th>
-                <th class="text-col">客戶全名</th>
-                <th class="text-col">報價日</th>
-                <th>應付總額(含稅)</th>
-                <th class="text-col">回簽狀態</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="orderBody"></tbody>
-          </table>
-        </div>
-        <button class="ghost-btn" onclick="addOrder()">＋ 新增委刊單</button>
-      </section>
-
-      <section id="orderDetailSection" style="display:none;">
-        <div class="section-head">
-          <h2>編輯中：<span id="orderDetailCode"></span></h2>
-          <div class="rule"></div>
-        </div>
-        <div id="orderDetailForm"></div>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <h2>匯出</h2>
-          <div class="rule"></div>
-        </div>
-        <div class="export-panel">
-          <button class="solid-btn" onclick="exportOrders()">匯出委刊單（Excel，內部完整版）</button>
-          <div class="export-note">含客戶統編、對帳銀行末五碼等敏感資訊，僅限公司內部留存使用，不可提供給外部。匯出後放進「待套版」資料夾，交由 Cowork 套上正式報價單格式。</div>
-        </div>
-      </section>
-    </div>
-
-    <div id="systemHealthAnchor"></div>
     <div class="view" id="view-ytsplit">
       <div class="top-row">
         <div>
@@ -5807,7 +5726,7 @@
     return {subtotal, tax, total: subtotal+tax};
   }
 
-  function renderOrders(){
+  function renderOrders(){ if(!document.getElementById('orderBody')) return;  // v76：委刊單頁面已移除（Blaire指示：改由夥伴手動填寫）
     const filterSel = document.getElementById('orderStatusFilter');
     const filterVal = filterSel.value;
     const body = document.getElementById('orderBody');
