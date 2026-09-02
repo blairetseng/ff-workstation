@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>自由自在｜制式作業台 v79</title>
+<title>自由自在｜制式作業台 v80</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -646,7 +646,7 @@
   <div style="background:#fff; border:1px solid #d8d6d0; padding:48px 56px; text-align:center; max-width:380px; width:90%;">
     <div style="font-family:'Noto Serif TC',serif; font-size:12px; letter-spacing:0.3em; color:#6b6b6b; margin-bottom:8px;">自由自在</div>
     <div style="font-family:'Noto Serif TC',serif; font-size:24px; font-weight:700; margin-bottom:4px;">制式作業台</div>
-    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v79</div>
+    <div style="font-size:12px; color:#9a9a9a; margin-bottom:32px; letter-spacing:0.05em;">FF WORKSTATION · v80</div>
     <button id="googleSignInBtn" onclick="signInWithGoogle()" style="width:100%; padding:13px; background:#1a1a1a; color:#fff; border:none; cursor:pointer; font-size:14px; font-family:'Noto Sans TC',sans-serif; letter-spacing:0.05em; display:flex; align-items:center; justify-content:center; gap:10px;">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
       以 Google 帳號登入
@@ -675,7 +675,7 @@
     <div class="sidebar-foot">
       表單設計與流程標準化<br>
       委刊單・零用金請款單・財務報表<br>
-      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v79</span>
+      <span style="display:inline-block; margin-top:6px; padding:2px 8px; border:1px solid #555; font-size:11px; letter-spacing:1px;">版本 v80</span>
       <div id="userInfoBar" style="margin-top:10px; padding-top:10px; border-top:1px solid #3a3a3a; display:none;">
         <div id="userEmail" style="font-size:11px; color:#9a9a9a; word-break:break-all; margin-bottom:6px;"></div>
         <button onclick="signOut()" style="background:transparent; border:1px solid #555; color:#c9c9c9; font-size:11px; padding:3px 10px; cursor:pointer; border-radius:2px; width:100%;">登出</button>
@@ -936,7 +936,7 @@
           <select id="rqTo" style="border:1px solid var(--line); padding:6px 10px;"></select>
           <select id="rqIp" style="border:1px solid var(--line); padding:6px 10px;"></select>
           <select id="rqType" style="border:1px solid var(--line); padding:6px 10px;"></select>
-          <button onclick="renderRangeQuery()" style="border:1px solid var(--ink); background:var(--ink); color:#fff; padding:6px 18px; cursor:pointer;">查詢</button>
+          <span style="width:1px;height:22px;background:var(--line);margin:0 4px;"></span><button onclick="setAssessPeriod('H1')" style="border:1px solid var(--line);background:transparent;padding:6px 12px;cursor:pointer;font-size:13px;" title="考核上半期（4月至9月）">上半期 4–9月</button><button onclick="setAssessPeriod('H2')" style="border:1px solid var(--line);background:transparent;padding:6px 12px;cursor:pointer;font-size:13px;" title="考核下半期（10月至次年3月，跨年）">下半期 10–3月</button><button onclick="renderRangeQuery()" style="border:1px solid var(--ink); background:var(--ink); color:#fff; padding:6px 18px; cursor:pointer;">查詢</button>
         </div>
         <div id="rqSummary" style="margin:14px 0;"></div>
         <div class="table-wrap" id="rqDetailWrap" style="display:none;">
@@ -2536,7 +2536,7 @@
   document.getElementById('reportMonth').addEventListener('change', renderIpReport);
 
   
-// ── v79 簡少年 YT 分潤：方案A（2026-09-02 Blaire 裁定）────────────────
+// ── v80 簡少年 YT 分潤：方案A（2026-09-02 Blaire 裁定）────────────────
 // 分界線＝2026年6月。之後走未稅口徑（差額＝未稅分配−9,000）；
 // 之前依「撥款凍結原則」沿用已發報表數字，不重算、不追討。
 // 1-5月數字取自已發給簡少年的月報表PDF（未稅TWD，負值＝自簡少年扣除）。
@@ -4304,7 +4304,7 @@ function ytFigureFor(ip, month){
     _toastTimer = setTimeout(()=>{ t.style.display='none'; }, ok ? 1500 : 5000);
   }
   
-// v79 授權閘門：白名單外的帳號不得進入作業台
+// v80 授權閘門：白名單外的帳號不得進入作業台
 async function ffCheckAllowed(email){
   try{
     const { data, error } = await _sb.from('ff_user_roles').select('email');
@@ -5064,7 +5064,41 @@ function showLoginScreen(){
 
   // ===== 自訂區間查詢 =====
   function yymmLabel(yymm){ return '20'+yymm.slice(0,2)+'年'+parseInt(yymm.slice(2),10)+'月'; }
-  function initRangeQuery(){
+  
+// ── v80 考核期間預設鈕（H1=4–9月、H2=10–3月跨年）────────────
+// 曆年篩選器完全不動；這裡只是換一個加總窗。
+// YYMM 字串排序天然支援跨年（2510→2603 即一段連續區間）。
+function setAssessPeriod(which){
+  const fromSel = document.getElementById('rqFrom');
+  const toSel = document.getElementById('rqTo');
+  if(!fromSel || !toSel) return;
+  const avail = [...fromSel.options].map(o=>o.value).filter(v=>/^\d{4}$/.test(v)).sort();
+  if(!avail.length) return;
+  const now = new Date();
+  let yy = now.getFullYear() % 100, mm = now.getMonth() + 1;
+  let fromV, toV;
+  if(which === 'H1'){
+    // 本年度 4–9月；若現在還沒到4月，取上一年
+    const y = (mm >= 4) ? yy : yy - 1;
+    fromV = String(y).padStart(2,'0') + '04';
+    toV   = String(y).padStart(2,'0') + '09';
+  } else {
+    // 10月 → 次年3月；若現在在1–3月，起點是前一年10月
+    const y = (mm >= 10) ? yy : yy - 1;
+    fromV = String(y).padStart(2,'0') + '10';
+    toV   = String(y+1).padStart(2,'0') + '03';
+  }
+  const clamp = v => { if(v < avail[0]) return avail[0]; if(v > avail[avail.length-1]) return avail[avail.length-1]; return v; };
+  fromSel.value = clamp(fromV);
+  toSel.value = clamp(toV);
+  if(fromSel.value !== fromV || toSel.value !== toV){
+    const nearest = t => avail.reduce((b,v)=> Math.abs(Number(v)-Number(t)) < Math.abs(Number(b)-Number(t)) ? v : b, avail[0]);
+    if(![...fromSel.options].some(o=>o.value===fromSel.value)) fromSel.value = nearest(fromV);
+    if(![...toSel.options].some(o=>o.value===toSel.value)) toSel.value = nearest(toV);
+  }
+  renderRangeQuery();
+}
+function initRangeQuery(){
     const fromSel = document.getElementById('rqFrom');
     if(!fromSel || fromSel.dataset.bound) return;
     const yymms = [...new Set(projectRegistry.map(getProjectYearMonth).filter(v=>/^\d{4}$/.test(v)))].sort();
@@ -5781,7 +5815,7 @@ function showLoginScreen(){
     return {subtotal, tax, total: subtotal+tax};
   }
 
-  function renderOrders(){ if(!document.getElementById('orderBody')) return;  // v79：委刊單頁面已移除（Blaire指示：改由夥伴手動填寫）
+  function renderOrders(){ if(!document.getElementById('orderBody')) return;  // v80：委刊單頁面已移除（Blaire指示：改由夥伴手動填寫）
     const filterSel = document.getElementById('orderStatusFilter');
     const filterVal = filterSel.value;
     const body = document.getElementById('orderBody');
